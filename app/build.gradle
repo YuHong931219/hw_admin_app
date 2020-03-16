@@ -1,0 +1,107 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
+    defaultConfig {
+        applicationId "cn.zmmax.zebarx"
+        minSdkVersion 21
+        versionCode 1
+        versionName "0.0.2"
+        vectorDrawables.useSupportLibrary = true
+        manifestPlaceholders = [zmscm_appName: "Zbarv-v"]
+        flavorDimensions "versionCode"
+        multiDexEnabled true
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath = true
+                arguments = [ moduleName : project.getName() ]
+            }
+        }
+    }
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "Zebar_HW_" + defaultConfig.versionName + ".apk"
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            manifestPlaceholders = [zmscm_appName: "Zbar"]
+        }
+    }
+    productFlavors {
+        autoTest {
+            manifestPlaceholders = [zmscm_appName: "Zbar"]
+        }
+    }
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8
+    }
+    lintOptions {
+        abortOnError false
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation project(':magicindicator')
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'com.google.android.material:material:1.1.0-alpha10'
+    implementation 'com.jakewharton:butterknife:10.1.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
+    implementation 'org.litepal.android:core:1.3.2'
+    implementation 'com.squareup.okhttp3:okhttp:4.0.1'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.10'
+    implementation 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.2.5'
+    implementation 'com.github.cazaea:sweet-alert-dialog:1.0.0'
+    implementation 'site.gemus:openingstartanimation:1.0.0'
+    implementation 'com.shamanland:fonticon:0.1.9'
+    implementation 'com.j256.ormlite:ormlite-android:5.1'
+    implementation 'com.j256.ormlite:ormlite-core:5.1'
+    implementation 'com.beardedhen:androidbootstrap:2.3.2'
+    implementation 'q.rorbin:badgeview:1.1.2'
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.47'
+    implementation 'com.github.xuexiangjys:XUI:1.0.9'
+    implementation 'com.github.xuexiangjys.XAOP:xaop-runtime:1.0.3'
+    implementation 'com.github.xuexiangjys:XHttp2:1.0.2'
+    implementation 'com.github.xuexiangjys:XUpdate:1.0.9'
+    implementation 'com.systex.zmmax.XQRCodes:XQRCodes:1.0.0'
+    implementation 'com.github.xuexiangjys.XUtil:xutil-core:1.1.6'
+    implementation 'com.github.xuexiangjys.XUtil:xutil-sub:1.1.6'
+    implementation 'com.github.xuexiangjys:rxutil2:1.1.5'
+    implementation 'com.github.xuexiangjys.PictureSelector:picture-core:1.0.3'
+    implementation 'com.github.xuexiangjys.XRouter:xrouter-runtime:1.0.1'
+    annotationProcessor 'com.github.xuexiangjys.XRouter:xrouter-compiler:1.0.1'
+    implementation 'com.systex.zmmax.Xpages:XPages:1.0.3'
+    annotationProcessor 'com.systex.zmmax.Xpages:XPages-compiler:1.0.3'
+    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'com.squareup.retrofit2:retrofit:2.6.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.6.0'
+    implementation 'com.yarolegovich:sliding-root-nav:1.1.0'
+    implementation 'com.github.xuexiangjys.SmartRefreshLayout:refresh-header:1.1.5'
+    implementation 'com.github.xuexiangjys.SmartRefreshLayout:refresh-layout:1.1.5'
+    implementation 'com.github.xuexiangjys.AgentWeb:agentweb-core:1.0.0'
+    implementation 'com.github.xuexiangjys.AgentWeb:agentweb-download:1.0.0'
+    implementation 'com.github.xuexiangjys.AgentWeb:agentweb-filechooser:1.0.0'
+    implementation 'com.lcodecorex:tkrefreshlayout:1.0.7'
+    compileOnly 'org.projectlombok:lombok:1.16.18'
+    implementation 'org.glassfish:javax.annotation:10.0-b28'
+    implementation 'com.kongzue.debugsdk:debugsdk:1.1.0'
+    implementation files('libs/mail.jar')
+    implementation files('libs/activation.jar')
+    implementation files('libs/additionnal.jar')
+    implementation files('libs/core.jar')
+    implementation files('libs/zypos1.8.jar')
+}
+repositories {
+    mavenCentral()
+}

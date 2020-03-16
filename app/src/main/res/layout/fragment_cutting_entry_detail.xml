@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.xuexiang.xui.widget.XUIKeyboardScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.xuexiang.xui.widget.layout.XUILinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.xuexiang.xui.widget.layout.XUILinearLayout style="@style/CardLayOut">
+
+            <com.xuexiang.xui.widget.layout.XUILinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.xuexiang.xui.widget.textview.autofit.AutoFitTextView
+                    style="@style/TextStyle.Content.Label"
+                    android:text="料号"
+                    tools:ignore="HardcodedText" />
+
+                <com.xuexiang.xui.widget.textview.autofit.AutoFitTextView
+                    android:id="@+id/material_code"
+                    style="@style/TextStyle.Content.Content" />
+
+            </com.xuexiang.xui.widget.layout.XUILinearLayout>
+
+            <com.xuexiang.xui.widget.layout.XUILinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.xuexiang.xui.widget.textview.autofit.AutoFitTextView
+                    style="@style/TextStyle.Content.Label"
+                    android:text="品名"
+                    tools:ignore="HardcodedText" />
+
+                <com.xuexiang.xui.widget.textview.autofit.AutoFitTextView
+                    android:id="@+id/material_name"
+                    style="@style/TextStyle.Content.Content" />
+
+            </com.xuexiang.xui.widget.layout.XUILinearLayout>
+
+            <com.xuexiang.xui.widget.layout.XUILinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.xuexiang.xui.widget.textview.autofit.AutoFitTextView
+                    style="@style/TextStyle.Content.Label"
+                    android:text="规格"
+                    tools:ignore="HardcodedText" />
+
+                <com.xuexiang.xui.widget.textview.autofit.AutoFitTextView
+                    android:id="@+id/spec"
+                    style="@style/TextStyle.Content.Content" />
+
+            </com.xuexiang.xui.widget.layout.XUILinearLayout>
+
+            <com.xuexiang.xui.widget.layout.XUILinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.xuexiang.xui.widget.textview.autofit.AutoFitTextView
+                    style="@style/TextStyle.Content.Label"
+                    android:text="@string/label_unit"
+                    tools:ignore="HardcodedText" />
+
+                <com.xuexiang.xui.widget.textview.autofit.AutoFitTextView
+                    android:id="@+id/unit"
+                    style="@style/TextStyle.Content.Content" />
+
+            </com.xuexiang.xui.widget.layout.XUILinearLayout>
+
+            <com.xuexiang.xui.widget.layout.XUILinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.xuexiang.xui.widget.textview.autofit.AutoFitTextView
+                    style="@style/TextStyle.Content.Label"
+                    android:text="@string/label_batch_no"
+                    tools:ignore="HardcodedText" />
+
+                <com.xuexiang.xui.widget.textview.autofit.AutoFitTextView
+                    android:id="@+id/batch_no"
+                    style="@style/TextStyle.Content.Content" />
+
+            </com.xuexiang.xui.widget.layout.XUILinearLayout>
+
+            <com.xuexiang.xui.widget.layout.XUILinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.xuexiang.xui.widget.textview.autofit.AutoFitTextView
+                    style="@style/TextStyle.Content.Label"
+                    android:text="@string/label_need_amount"
+                    tools:ignore="HardcodedText" />
+
+                <com.xuexiang.xui.widget.textview.autofit.AutoFitTextView
+                    android:id="@+id/need_amount"
+                    style="@style/TextStyle.Content.Content" />
+
+            </com.xuexiang.xui.widget.layout.XUILinearLayout>
+
+            <com.xuexiang.xui.widget.layout.XUILinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.xuexiang.xui.widget.textview.autofit.AutoFitTextView
+                    style="@style/TextStyle.Content.Label"
+                    android:text="@string/label_work_code"
+                    tools:ignore="HardcodedText" />
+
+                <EditText
+                    android:id="@+id/work_code"
+                    style="@style/EditText.Normal.Content"
+                    android:enabled="false"
+                    android:layout_weight="2"/>
+
+                <Button
+                    android:id="@+id/btn_select_work_code"
+                    style="@style/Button.Radius"
+                    android:layout_marginEnd="@dimen/dp_10"
+                    android:text="挑选"
+                    tools:ignore="HardcodedText" />
+
+            </com.xuexiang.xui.widget.layout.XUILinearLayout>
+
+            <com.xuexiang.xui.widget.layout.XUILinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="3">
+
+                <com.xuexiang.xui.widget.textview.autofit.AutoFitTextView
+                    style="@style/TextStyle.Content.Label"
+                    android:text="@string/label_location_code"
+                    tools:ignore="HardcodedText" />
+
+                <EditText
+                    android:id="@+id/location_code"
+                    android:layout_weight="2"
+                    android:enabled="false"
+                    style="@style/EditText.Normal.Content"/>
+
+                <Button
+                    android:id="@+id/btn_select_location"
+                    style="@style/Button.Radius"
+                    android:layout_marginEnd="@dimen/dp_10"
+                    android:text="挑选"
+                    tools:ignore="HardcodedText" />
+
+            </com.xuexiang.xui.widget.layout.XUILinearLayout>
+
+            <com.xuexiang.xui.widget.layout.XUILinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.xuexiang.xui.widget.textview.autofit.AutoFitTextView
+                    style="@style/TextStyle.Content.Label"
+                    android:text="片宽"
+                    tools:ignore="HardcodedText" />
+
+                <com.xuexiang.xui.widget.textview.autofit.AutoFitTextView
+                    android:id="@+id/piece_width"
+                    style="@style/TextStyle.Content.Content"
+                    android:layout_weight="1"/>
+
+                <com.xuexiang.xui.widget.textview.autofit.AutoFitTextView
+                    style="@style/TextStyle.Content.Label"
+                    android:text="片数"
+                    tools:ignore="HardcodedText" />
+
+                <com.xuexiang.xui.widget.textview.autofit.AutoFitTextView
+                    android:id="@+id/piece_amount"
+                    style="@style/TextStyle.Content.Content"
+                    android:layout_weight="1"/>
+
+            </com.xuexiang.xui.widget.layout.XUILinearLayout>
+
+            <com.xuexiang.xui.widget.layout.XUILinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.xuexiang.xui.widget.textview.autofit.AutoFitTextView
+                    style="@style/TextStyle.Content.Label"
+                    android:text="本卷长度"
+                    tools:ignore="HardcodedText" />
+
+                <EditText
+                    android:id="@+id/volume"
+                    style="@style/EditText.Normal.Content"
+                    android:inputType="numberDecimal"/>
+
+            </com.xuexiang.xui.widget.layout.XUILinearLayout>
+        </com.xuexiang.xui.widget.layout.XUILinearLayout>
+
+        <com.xuexiang.xui.widget.layout.XUILinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center|top"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="@dimen/dp_40"
+            android:gravity="center|top"
+            android:orientation="horizontal">
+
+            <com.xuexiang.xui.widget.textview.supertextview.SuperButton
+                style="@style/SuperButton.Gray"
+                android:id="@+id/btn_cancel"
+                android:layout_marginStart="20dp" />
+
+            <com.xuexiang.xui.widget.textview.supertextview.SuperButton
+                style="@style/SuperButton.Green"
+                android:id="@+id/btn_sure"
+                android:layout_marginStart="20dp"
+                android:text="确定"
+                tools:ignore="HardcodedText" />
+
+        </com.xuexiang.xui.widget.layout.XUILinearLayout>
+    </com.xuexiang.xui.widget.layout.XUILinearLayout>
+</com.xuexiang.xui.widget.XUIKeyboardScrollView>

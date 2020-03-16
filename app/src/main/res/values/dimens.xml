@@ -1,0 +1,20 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="tab_text">12sp</dimen>
+
+    <dimen name="titleBarHeight">46dp</dimen>
+    <dimen name="mainTabHeight">60dp</dimen>
+
+    <dimen name="mdialog_width">254dp</dimen>
+    <dimen name="common_navigator_height">45dp</dimen>
+
+    <dimen name="main_item_height">60dp</dimen>
+    <dimen name="bottom_action">60dp</dimen>
+    <dimen name="scan_detail_item_height">40dp</dimen>
+    <dimen name="bottom_empty_view_h">100dp</dimen>
+    <dimen name="config_app_logo_bottom">250dp</dimen>
+    <dimen name="config_company_logo_bottom">80dp</dimen>
+</resources>

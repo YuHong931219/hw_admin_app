@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="menu_titles">
+        <item>条码</item>
+        <item>统计</item>
+        <item>我的</item>
+        <item>关于</item>
+        <item />
+        <item>退出</item>
+    </string-array>
+    <array name="menu_icons">
+        <item>@drawable/select_icon_tabbar_purchase</item>
+        <item>@drawable/select_icon_tabbar_warehouse</item>
+        <item>@drawable/select_icon_tabbar_work</item>
+        <item>@drawable/icon_tabbar_about</item>
+        <item>0</item>
+        <item>@drawable/icon_tabbar_logout</item>
+    </array>
+    <string-array name="adBlockUrl">
+        <item>ubmcmm.baidustatic.com</item>
+        <item>gss1.bdstatic.com/</item>
+        <item>cpro2.baidustatic.com</item>
+        <item>cpro.baidustatic.com</item>
+        <item>lianmeng.360.cn</item>
+        <item>nsclick.baidu.com</item>
+        <item>caclick.baidu.com/</item>
+        <item>jieaogd.com</item>
+        <item>publish-pic-cpu.baidu.com/</item>
+        <item>cpro.baidustatic.com/</item>
+        <item>hao61.net/</item>
+        <item>cpu.baidu.com/</item>
+        <item>pos.baidu.com</item>
+        <item>cbjs.baidu.com</item>
+        <item>cpro.baidu.com</item>
+        <item>images.sohu.com/cs/jsfile/js/c.js</item>
+        <item>union.sogou.com/</item>
+        <item>sogou.com/</item>
+        <item>5txs.cn/</item>
+        <item>liuzhi520.com/</item>
+        <item>yhzm.cc/</item>
+        <item>jieaogd.com</item>
+        <item>a.baidu.com</item>
+        <item>c.baidu.com</item>
+        <item>mlnbike.com</item>
+        <item>alipays://platformapi</item>
+        <item>alipay.com/</item>
+        <item>jieaogd.com</item>
+        <item>vipshop.com</item>
+        <item>bayimob.com</item>
+    </string-array>
+    <string-array name="http_type_array">
+        <item>http://</item>
+        <item>https://</item>
+    </string-array>
+</resources>

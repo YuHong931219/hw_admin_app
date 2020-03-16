@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/changeUser"
+        android:icon="@mipmap/exchange"
+        android:title="@string/changeUser"/>
+    <item
+        android:id="@+id/setting"
+        android:icon="@mipmap/setting"
+        android:title="清除缓存"
+        tools:ignore="HardcodedText" />
+    <item
+        android:id="@+id/helper"
+        android:icon="@mipmap/help"
+        android:title="@string/help"/>
+    <item
+        android:id="@+id/contactUs"
+        android:icon="@mipmap/contact_us"
+        android:title="@string/contract"/>
+    <item
+        android:id="@+id/about"
+        android:icon="@mipmap/about"
+        android:title="@string/about"/>
+</menu>

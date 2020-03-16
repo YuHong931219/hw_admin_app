@@ -1,0 +1,26 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/dialog_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/xui_config_bg_dialog_radius_white"
+    android:gravity="center"
+    android:minHeight="?attr/xui_dialog_loading_min_size"
+    android:minWidth="?attr/xui_dialog_loading_min_size"
+    android:orientation="vertical"
+    android:padding="?attr/xui_dialog_loading_padding_size">
+
+    <com.xuexiang.xui.widget.progress.loading.ARCLoadingView
+        android:id="@+id/arc_loading_view"
+        android:layout_width="?attr/xui_dialog_loading_min_size"
+        android:layout_height="?attr/xui_dialog_loading_min_size"
+        app:lv_auto="false"
+        app:lv_width="?attr/xui_dialog_loading_min_size" />
+
+    <TextView
+        android:id="@+id/tv_tip_message"
+        style="@style/TextStyle.Explain"
+        android:layout_marginTop="10dp"
+        android:textSize="20sp"
+        android:text="@string/loading_message" />
+</LinearLayout>

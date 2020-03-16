@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">移动条码</string>
+    <string name="label_sell_main">首页</string>
+    <string name="label_sell_myself">我的</string>
+    <string name="label_sell_working">应用</string>
+    <string name="label_username_login">用 户 名: </string>
+    <string name="label_password_login">密&#160;&#160;&#160;&#160;&#160;&#160;码: </string>
+    <string name="label_procurement">采购管理</string>
+    <string name="label_production">生产管理</string>
+    <string name="label_inventory">仓库管理</string>
+    <string name="label_reports">报工管理</string>
+    <string name="label_assets">资产管理</string>
+    <string name="label_sales">销售管理</string>
+    <string name="label_pushtime">推送时间</string>
+    <string name="label_plantcenter">营运中心</string>
+    <string name="label_version_info">版本信息</string>
+    <string name="label_shd">送货单</string>
+    <string name="label_gys">供应商</string>
+    <string name="label_ccq">存储区</string>
+    <string name="label_zfshouhao">杂收单号</string>
+    <string name="label_zafahao">杂收单号</string>
+    <string name="label_liaohao">料号</string>
+    <string name="label_cangku">仓库</string>
+    <string name="label_check_result">检验结果</string>
+    <string name="label_unreason">不合格原因</string>
+    <string name="label_pinname">品名</string>
+    <string name="label_model">规格</string>
+    <string name="label_pihao">批号</string>
+    <string name="label_app_name">申请人</string>
+    <string name="label_shuoming">说明</string>
+    <string name="label_sqshuliang">申请数量</string>
+    <string name="label_shishousl">实收数量</string>
+    <string name="label_shifasl">实发数量</string>
+    <string name="label_wuliaolabel">物料标签</string>
+    <string name="label_yfshuliang">应发数量</string>
+    <string name="label_zfshuliang">杂发数量</string>
+    <string name="label_leijishuliang">累计数量</string>
+    <string name="label_liyouma">理由码</string>
+    <string name="label_kuwei">库位</string>
+    <string name="label_remark">备注</string>
+    <string name="label_chukukuwei">出库库位</string>
+    <string name="label_dingdan">订单</string>
+    <string name="label_productCode">产品编号</string>
+    <string name="label_productName">产品名称</string>
+    <string name="label_receive_xiangci">项次</string>
+    <string name="label_songhuoliang">送货量</string>
+    <string name="label_songhuodan">送货单</string>
+    <string name="label_rukuliang">入库量</string>
+    <string name="label_getcount">收货量</string>
+    <string name="label_shouhuoshijian">收货时间</string>
+    <string name="package_amount">箱数</string>
+    <string name="package_spec">箱规</string>
+    <string name="label_shuliang">数量</string>
+    <string name="label_tuiliaoliang">退料量</string>
+    <string name="label_songjianliang">送检量</string>
+    <string name="label_dairukuliang">待入库量</string>
+    <string name="label_yikuliang">移库量</string>
+    <string name="label_tuopan">托盘</string>
+    <string name="label_tuopanhao">托盘号</string>
+    <string name="label_unit">单位</string>
+    <string name="label_tuijiancangku">推荐仓库</string>
+    <string name="label_tuijiankuwei">推荐库位</string>
+    <string name="label_cangguan">仓管员</string>
+    <string name="label_sure">确&#160;&#160;&#160;&#160;&#160;定</string>
+    <string name="label_clear">清&#160;&#160;&#160;&#160;&#160;除</string>
+    <string name="department">部门</string>
+    <string name="label_cancel">取&#160;&#160;&#160;&#160;&#160;消</string>
+    <string name="label_paint">打&#160;&#160;&#160;&#160;&#160;印</string>
+    <string name="label_submit">确&#160;&#160;&#160;&#160;&#160;认</string>
+    <string name="label_giveon">提&#160;&#160;&#160;&#160;&#160;交</string>
+    <string name="btn_commit">提&#160;&#160;&#160;&#160;&#160;交</string>
+    <string name="label_chaxun">查&#160;&#160;&#160;&#160;&#160;询</string>
+    <string name="btn_delete">删&#160;&#160;&#160;&#160;&#160;除</string>
+    <string name="btn_faliao">发&#160;&#160;&#160;&#160;&#160;料</string>
+    <string name="btn_qingchutiaojian">清除条件</string>
+    <string name="label_zssqd">杂发申请单*</string>
+    <string name="title_inandout">杂收发</string>
+    <string name="title_checkandallow">盘点调拨</string>
+    <string name="title_purchase">采购管理</string>
+    <string name="title_receiving_warehousing">扫码入库</string>
+    <string name="title_kuaisuruku">快速入库</string>
+    <string name="title_receiving_inspection">收货检验</string>
+    <string name="title_tuopanruku">托盘收货</string>
+    <string name="title_tuopanliuzhuan">托盘移库</string>
+    <string name="title_cangkutuiliao">仓库退料</string>
+    <string name="title_produce">生产管理</string>
+    <string name="title_allocation_pool">调拨备库</string>
+    <string name="title_allocation_review">调拨复核</string>
+    <string name="title_diaoboruku">调拨入库</string>
+    <string name="title_wo_bill">工单发料</string>
+    <string name="title_tsqtq">推送齐套区</string>
+    <string name="title_beiliaofaliao">工单备料</string>
+    <string name="title_put_away">入库上架</string>
+    <string name="title_zashouruku">杂收入库</string>
+    <string name="title_xt">销退</string>
+    <string name="title_zafachuku">杂发出库</string>
+    <string name="pd_line_code">产线条码</string>
+    <string name="title_work_order_same">工单齐套</string>
+    <string name="title_assembly_materials">总装发料</string>
+    <string name="title_end_of_month">月底退料</string>
+    <string name="title_wip_completion">完工入库</string>
+    <string name="title_shopping">采购管理(整单收货)</string>
+    <string name="title_shopping_allbarcode">采购管理(全扫码)</string>
+    <string name="title_getgoods">采购收货</string>
+    <string name="title_getinhouse">采购入库</string>
+    <string name="hint_scan">(扫描收货码)</string>
+    <string name="btn_login">登录</string>
+    <string name="btn_txsz">通讯设置</string>
+    <string name="btn_common_rsp_msg">提示信息</string>
+    <string name="message_loginid">请输入登陆账号</string>
+    <string name="message_pwd">请输入密码</string>
+    <string name="message_logining">登录中，请稍后...</string>
+    <string name="message_tishi">提示</string>
+    <string name="message_has_scandata">数据还没有提交，是否退出？</string>
+    <string name="message_scancode_different">已有扫描内容，是否重新扫描？</string>
+    <string name="message_save_successful">保存成功</string>
+    <string name="message_error_shuliang">收货量不可超出送货量！</string>
+    <string name="message_error_chongfu">请勿重复添加此数据！</string>
+    <string name="message_shuliang_error">申请数量不可超出送货量</string>
+    <string name="message_goods_num_error">请输入收货量</string>
+    <string name="message_goods_num_null">捡料下架前请先扫描确定料件</string>
+    <string name="message_success_num_error">请填写正确的数量</string>
+    <string name="message_chao_num_error">实发数量已超出应发余量,请重新填写正确数量！</string>
+    <string name="message_real_num_error_0">实收数量不可为零</string>
+    <string name="message_real_num_error">实收数量不可大于申请数量</string>
+    <string name="message_commit_success">提交成功</string>
+    <string name="message_commit_failed">提交失败</string>
+    <string name="message_alert_hasscan">收货码已经扫描过了</string>
+    <string name="message_alert_kucan">库位码已经扫描过了</string>
+    <string name="message_clear_data">是否清空当前扫描的数据？</string>
+    <string name="message_scannofull">扫描的货码不全</string>
+    <string name="message_rukuliang_null">请输入入库量</string>
+    <string name="message_error_rukuliang">入库量不可超出待收量！</string>
+    <string name="message_tuopan_null">托盘不能为空</string>
+    <string name="message_beiliaoliang_null">备料量必须大于0</string>
+    <string name="exit">再按一次返回键退出</string>
+    <string name="title_makemissing_scan">补打条码</string>
+    <string name="title_connected_devices">连接设备</string>
+    <string name="not_connected">你没有连接任何设备</string>
+    <string name="please_select_bt_name">请选择你的设备</string>
+    <string name="title_paired_devices">配对的设备</string>
+    <string name="title_other_devices">其他有效设备</string>
+    <string name="scan_bt_device">搜索蓝牙设备</string>
+    <string name="scanning">扫描设备</string>
+    <string name="label_sell_historyfest">历史订单</string>
+    <string name="label_my_addr">我的地址</string>
+    <string name="label_selectall">全选</string>
+    <string name="label_commitsells">提交订单</string>
+    <string name="lable_sell_ordernumb">订单号:</string>
+    <string name="lable_sell_order_time">订单时间:</string>
+    <string name="lable_sell_order_state">订单状态:</string>
+    <string name="lable_sell_order_look">再去看看>></string>
+    <string name="title_sellorder_det">订单详情</string>
+    <string name="lable_sell_ordersum">合计</string>
+    <string name="message_no_addr">没有地址</string>
+    <string name="label_delete_sure">确定删除所选商品吗?</string>
+    <string name="lable_sell_order_delete">删除订单</string>
+    <string name="label_delete_s">确定删除吗?</string>
+    <string name="label_storagebarcode">库位库存</string>
+
+    <string name="title_storage_barcode">库位查询条码库存</string>
+    <string name="message_scan_plan">请先扫描计划单号</string>
+    <string name="tab_tmsm">条码扫描</string>
+    <string name="tab_flmx">发料明细</string>
+    <string name="tab_tlmx">退料明细</string>
+    <string name="check_result">检验结果</string>
+    <string name="refund_result">验退结果</string>
+    <string name="tab_smjg">扫描结果</string>
+    <string name="tab_sjhz">数据汇总</string>
+    <string name="tab_kwkc">按库位</string>
+    <string name="tab_wlsm">物料扫描</string>
+    <string name="tab_jypd">检验判定</string>
+    <string name="tab_pcsm">批次扫描</string>
+    <string name="tab_jsybgks">技术员报工开始</string>
+    <string name="tab_jsybgjs">技术员报工结束</string>
+    <string name="tab_scbgks">生产报工开工</string>
+    <string name="tab_scbgjs">生产报工完工</string>
+    <string name="tab_ycbg">异常除外报工开始</string>
+    <string name="tab_ycjc">异常除外报工结束</string>
+    <string name="tab_zfd">杂发单</string>
+    <string name="tab_zfmx">杂发明细</string>
+    <string name="tab_smwl">扫描物料</string>
+    <string name="tab_cktz">出库通知</string>
+    <string name="tab_cpmx">成品明细</string>
+    <string name="tab_wlxq">物料需求</string>
+    <string name="tab_blmx">备料明细</string>
+    <string name="tab_llmx">领料明细</string>
+    <string name="tab_gdsm">工单扫描</string>
+    <string name="tab_chsm">出货扫描</string>
+    <string name="tab_tmkc">条码库存</string>
+    <string name="tab_wlkc">按物料</string>
+    <string name="tab_dbd">调拨单</string>
+    <string name="tab_dbmx">调拨明细</string>
+    <string name="label_shouhuoqu">收货区</string>
+    <string name="lable_jieguo">结果</string>
+    <string name="message_xiangshu_null">请输入箱数</string>
+    <string name="message_xianggui_null">请输入箱规</string>
+    <string name="message_xiangshuxianggui_error">箱数、箱规和收货量不匹配</string>
+    <string name="label_date">日期</string>
+    <string name="btn_search">查询</string>
+    <string name="title_rukuqingdan">待入库清单</string>
+    <string name="label_dangqianwei">当前位</string>
+    <string name="label_yiruwei">移入位</string>
+    <string name="title_inventory_search">库存查询</string>
+    <string name="title_richangpandian">日常盘点</string>
+    <string name="title_tpmdy">托盘码打印</string>
+    <string name="tab_blsq">退料补料</string>
+    <string name="tab_yltl">余料退料</string>
+    <string name="title_kwmdy">库位码打印</string>
+    <string name="title_chengpingchuku">成品出货</string>
+    <string name="label_match_number">匹配量</string>
+    <string name="label_chukuliang">出库量</string>
+    <string name="label_kucunliang">库存量</string>
+    <string name="label_cunliang">存量</string>
+    <string name="label_send_amount">操作量</string>
+    <string name="message_delete_scandata">是否删除这条扫描数据？</string>
+    <string name="message_submit_data">确认提交?</string>
+    <string name="message_get_data_error">请求服务器失败，请检查网络！</string>
+    <string name="message_get_type_error">扫描单号不匹配，请确认再次扫描！</string>
+    <string name="message_hege_num_error">请输入合格量</string>
+    <string name="message_error_hege">合格量不可超出检验量！</string>
+    <string name="message_yantui_num_error">请输入验退量</string>
+    <string name="message_error_yandui">验退量不可超出检验量！</string>
+    <string name="message_tecai_num_error">请输入特采量</string>
+    <string name="message_error_tecai">特采量不可超出检验量！</string>
+    <string name="message_error_hyt_sum">合格量+验退量+特采量之和不可超出检验量！</string>
+    <string name="message_shishou_num_error">请输入实收量</string>
+    <string name="message_error_shishou">入库量不可超出收货量！</string>
+    <string name="message_kuwei_input_error">请输入库位</string>
+    <string name="message_jianyanliang_input_error">请输入检验量</string>
+    <string name="message_shouhuoqu_input_error">请扫描收货区</string>
+    <string name="span_batchbar">批次</string>
+    <string name="span_hegeliang">合格量</string>
+    <string name="span_yantuiliang">验退量</string>
+    <string name="span_liyou">理由</string>
+    <string name="span_tecailiang">特采量</string>
+    <string name="span_danjiansaomiao">扫码收货</string>
+    <string name="span_pre_store_entry">待入库查询</string>
+    <string name="span_zhengdansaomiao">快速收货</string>
+    <string name="title_stock_check">检验</string>
+    <string name="title_stock_ruku">入库</string>
+    <string name="title_she_kuwei">打印库位</string>
+    <string name="label_chouyanliang">检验量</string>
+    <string name="label_shouhuodan">收货单</string>
+    <string name="label_xiangci">项次</string>
+    <string name="label_daishouliang">待收量</string>
+    <string name="label_tongzhidan">出库通知单</string>
+    <string name="label_kehumingcheng">客户名称</string>
+    <string name="label_need_amount">需求量</string>
+    <string name="label_beiliaodan">备料单</string>
+    <string name="label_qitaoqu">齐套区</string>
+    <string name="label_team">班组</string>
+    <string name="label_chanxian">产线</string>
+    <string name="label_states">状态</string>
+    <string name="label_beiliaoqu">备料区</string>
+    <string name="label_xuqiuliang">需求量</string>
+    <string name="label_shenqingliang">申请量</string>
+    <string name="label_beiliaoliang">备料量</string>
+    <string name="label_cunkuliang">存库量</string>
+    <string name="label_gongdanbianhao">工单编号</string>
+    <string name="label_qitaoliang">齐套量</string>
+    <string name="label_num">数量</string>
+    <string name="label_finish_num">完工量</string>
+    <string name="label_print">打印</string>
+    <string name="label_gongdan">工单</string>
+    <string name="label_yuangong">员工</string>
+    <string name="label_diaobodan">调拨单</string>
+    <string name="label_tuiliaodan">退料单</string>
+    <string name="label_jianyanliang">检验量</string>
+    <string name="label_gongdanwuliao">发料单号</string>
+    <string name="label_diaoboliang">调拨量</string>
+    <string name="label_faliaoliang">发料量</string>
+    <string name="label_choujianliang">抽检量</string>
+    <string name="label_jitai">机台</string>
+    <string name="label_in_store">移入库位</string>
+    <string name="label_workingprocedure">工序报工</string>
+    <string name="message_succ_null">返回对象为空</string>
+    <string name="message_store_failed">库位未扫描成功</string>
+    <string name="message_checknum_failed">盘点计划单号未扫描成功</string>
+    <string name="message_ime02_success">库存扫描成功</string>
+    <string name="label_shm012">工单号</string>
+    <string name="label_scanin_num">扫入数量</string>
+    <string name="label_shm05">生产料号</string>
+    <string name="label_baogongcode">作业号</string>
+    <string name="label_baogongcode_name">作业名</string>
+    <string name="message_finish_order_failed">提交失败</string>
+    <string name="label_material_code">物料条码</string>
+    <string name="label_sthliao">物料</string>
+    <string name="label_delivery_ima02">品名</string>
+    <string name="label_allocarionimn01">调拨单号</string>
+    <string name="label_allocationimn05">拨出库位</string>
+    <string name="label_allocationimn16">拨出仓库</string>
+    <string name="label_inwasehouse_num">入库单号</string>
+    <string name="message_goods_num_bigs">输入数量过大</string>
+    <string name="title_scan_inventory">条码库存</string>
+    <string name="title_goods_inventory">料件库存</string>
+    <string name="title_goods_sku">库存单位</string>
+    <string name="message_zearo">不合格量不能为空请设置为0</string>
+    <string name="message_net_wifi">正在使用无线网络</string>
+    <string name="message_net_local">正在使用本地流量</string>
+    <string name="message_net_none">没有可用的网络 请检查网络设置</string>
+    <string name="label_location">库位</string>
+    <string name="work_code">工单单号</string>
+    <string name="batchbar_code">批次条码</string>
+    <string name="matching_num">匹配量</string>
+    <string name="can_input_num">可入库数量</string>
+    <string name="label_warehouse">仓位</string>
+    <string name="message_list_none">暂时没有数据</string>
+    <string name="message_rvb29vsrvb07">不合格量不能大于收货量</string>
+    <string name="label_privode">供应商</string>
+    <string name="label_privode_name">供应商名称</string>
+    <string name="label_toinputnum">请手动输入数量</string>
+    <string name="proposer">申请人</string>
+    <string name="warehouse">仓库</string>
+    <string name="warehouse_position">仓位</string>
+    <string name="reason_code">理由码</string>
+    <string name="label_reason">领料理由</string>
+    <string name="label_items">项次</string>
+    <string name="label_paymoney">金额</string>
+    <string name="label_inventory_num">盘点序号</string>
+    <string name="label_assets_inventory">资产盘点</string>
+    <string name="label_assets_inventory_date">盘点日期</string>
+    <string name="label_assets_inventory_time">盘点时间</string>
+    <string name="title_transfer_scanning">移库扫描</string>
+    <string name="title_receipt_patch">杂项发料</string>
+    <string name="title_location_label">库位标签</string>
+    <string name="title_receipt_info">扫描明细</string>
+    <string name="title_workorder_scaninfo">工单领料扫描</string>
+    <string name="title_workordersame_scaninfo">工单齐套扫描</string>
+    <string name="title_allocation_list">调拨待备库清单</string>
+    <string name="title_order_management">订单管理</string>
+    <string name="title_sales_shipment_management">销售出货</string>
+    <string name="title_sales_order_management">销售订单</string>
+    <string name="title_stock_control">库存管理</string>
+    <string name="title_stock_move">库存调拨</string>
+    <string name="title_receipt_dispatch">杂项收料</string>
+    <string name="title_job_booking">报工管理</string>
+    <string name="message_save_first">请先保存数据</string>
+    <string name="setting">设置</string>
+    <string name="title_inhouse_protected">收货入库维护</string>
+    <string name="title_getgoods_scan">采购收货扫描</string>
+    <string name="title_getgoodlist">收货待检验列表</string>
+    <string name="title_getgoods_check">收货检验</string>
+    <string name="message_matchnumber_check">收货量必须大于0</string>
+    <string name="message_matchnumber_check2">收货量不能大于需求量</string>
+    <string name="message_error_nogoods">没有数据</string>
+    <string name="message_error_noget">网络连接失败，请检查网络</string>
+    <string name="message_error_nonet">网络连接失败，请检查网络</string>
+    <string name="action_settings">Settings</string>
+    <string name="confirm">确认</string>
+    <string name="hint_write_pwd">请输入登陆密码</string>
+    <string name="hint_write_id">请输入账号</string>
+    <string name="label_item_id">项次</string>
+    <string name="label_inku">入库单</string>
+    <string name="scan_first">请先扫描到货单号再提交</string>
+    <string name="scan_code_first">物料码未扫描成功</string>
+    <string name="message_error">服务器错误</string>
+    <string name="message_inhandle">正在处理中</string>
+    <string name="message_loading">正在请求数据</string>
+    <string name="message_commitdata">正在提交数据</string>
+    <string name="message_error_update">获取服务器更新信息失败</string>
+    <string name="message_sd_error">SD卡不可用</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Strings related to Settings -->
+
+    <!-- Example General settings -->
+    <string name="pref_header_general">General</string>
+
+    <string name="pref_title_social_recommendations">Enable social recommendations</string>
+    <string name="pref_description_social_recommendations">Recommendations for people to contact
+        based on your message history
+    </string>
+
+    <string name="pref_title_display_name">Display name</string>
+    <string name="pref_default_display_name">John Smith</string>
+
+    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
+    <string-array name="pref_example_list_titles">
+        <item>Always</item>
+        <item>When possible</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_example_list_values">
+        <item>1</item>
+        <item>0</item>
+        <item>-1</item>
+    </string-array>
+
+    <!-- Example settings for Data & Sync -->
+    <string name="pref_header_data_sync">Data &amp; sync</string>
+
+    <string name="pref_title_sync_frequency">Sync frequency</string>
+    <string-array name="pref_sync_frequency_titles">
+        <item>15 minutes</item>
+        <item>30 minutes</item>
+        <item>1 hour</item>
+        <item>3 hours</item>
+        <item>6 hours</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_sync_frequency_values">
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>180</item>
+        <item>360</item>
+        <item>-1</item>
+    </string-array>
+
+    <string-array name="list_preference_entries">
+        <item>Entry 1</item>
+        <item>Entry 2</item>
+        <item>Entry 3</item>
+    </string-array>
+
+    <string-array name="list_preference_entry_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="multi_select_list_preference_default_value" />
+
+    <string name="pref_title_system_sync_settings">System sync settings</string>
+
+    <!-- Example settings for Notifications -->
+    <string name="pref_header_notifications">Notifications</string>
+
+    <string name="pref_title_new_message_notifications">New message notifications</string>
+
+    <string name="pref_title_ringtone">Ringtone</string>
+    <string name="pref_ringtone_silent">Silent</string>
+
+    <string name="pref_title_vibrate">Vibrate</string>
+    <string name="scan_work_code">工单</string>
+    <string name="fqc_check_query">FQC检验查询</string>
+    <string name="banzu">班组</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="about">关于移动条码</string>
+    <string name="contract">联系我们</string>
+    <string name="help">帮助和反馈</string>
+    <string name="changeUser">切换账户</string>
+    <string name="theme_title">华威供应商平台</string>
+    <string name="group_code">营运中心:</string>
+    <string name="fa_users">&#xf0c0;</string>
+    <string name="fa_user">&#xf007;</string>
+    <string name="fa_edit">&#xf044;</string>
+    <string name="fa_exchange">&#xf362;</string>
+    <string name="fa_lock">&#xf023;</string>
+    <string name="weight">重量</string>
+    <string name="scan_material_code">料号*</string>
+    <string name="scan_receive_location">收货区*</string>
+    <string name="delivery_amount">送货量</string>
+    <string name="scan_receive_amount">收货量*</string>
+    <string name="fa_scan"></string>
+    <string name="edit">编辑</string>
+    <string name="material_code">料号</string>
+    <string name="material_name">品名</string>
+    <string name="delivery_code">送货单</string>
+    <string name="forecast_date_product">预计出货时间</string>
+    <string name="address">送货地址</string>
+    <string name="default_location">默认库位</string>
+    <string name="re_out_amount">待出库量</string>
+    <string name="exit_page">退出</string>
+    <string name="delete">删除</string>
+    <string name="scan_location">库位*</string>
+    <string name="hint_user_name">用户名:</string>
+    <string name="hint_password">密码:</string>
+    <string name="loading_message">数据加载中...</string>
+    <string name="systex_scm_system">精诚供应链系统</string>
+    <string name="tiptop">tiptop</string>
+    <string name="about_item_homepage">访问官网</string>
+    <string name="about_item_update">检查更新</string>
+    <string name="about_item_operation">操作手册</string>
+    <string name="about_copyright">© %1$s 精诚中国 All rights reserved.</string>
+    <string name="lab_open_third_app">是否允许打开第三方APP</string>
+    <string name="lab_yes">允许</string>
+    <string name="lab_no">拒绝</string>
+    <string name="spec">规格</string>
+    <string name="batch_no">批号</string>
+    <string name="location_code">库位</string>
+    <string name="product_code">成品编号</string>
+    <string name="product_name">成品名称</string>
+    <string name="label_batch_no">批号</string>
+    <string name="label_work_code">工单</string>
+    <string name="label_location_code">库位</string>
+    <array name="bootstrap_dropdown_data">
+        <item>HUAWEI</item>
+    </array>
+</resources>

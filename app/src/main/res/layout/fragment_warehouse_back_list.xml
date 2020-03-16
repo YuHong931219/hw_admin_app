@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.xuexiang.xui.widget.layout.XUILinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EEE"
+    android:orientation="vertical">
+
+    <com.xuexiang.xui.widget.layout.XUILinearLayout style="@style/CardLayOut">
+
+        <com.xuexiang.xui.widget.layout.XUILinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp">
+
+            <com.xuexiang.xui.widget.textview.autofit.AutoFitTextView
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="仓退单"
+                android:textColor="@color/black"
+                tools:ignore="HardcodedText" />
+
+            <EditText
+                android:id="@+id/dn_no"
+                style="@style/EditText.Normal"
+                android:layout_width="0dp"
+                android:layout_height="28dp"
+                android:layout_weight="3"
+                android:autofillHints="送货单号"
+                android:inputType="text"
+                android:labelFor="@+id/dn_no"
+                tools:ignore="UnusedAttribute" />
+
+        </com.xuexiang.xui.widget.layout.XUILinearLayout>
+    </com.xuexiang.xui.widget.layout.XUILinearLayout>
+
+    <com.xuexiang.xui.widget.layout.XUILinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/dp_10"
+        android:background="@color/xui_config_color_white"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:xui_borderColor="?attr/xui_config_color_separator_light"
+        app:xui_outerNormalColor="?attr/xui_config_color_background"
+        app:xui_radius="5dp"
+        app:xui_showBorderOnlyBeforeL="true"
+        app:xui_useThemeGeneralShadowElevation="true">
+
+        <com.xuexiang.xui.widget.statelayout.StatefulLayout
+            android:id="@+id/status_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#EEE"
+            app:stf_animationEnabled="true"
+            app:stf_inAnimation="@android:anim/slide_in_left"
+            app:stf_outAnimation="@android:anim/slide_out_right">
+
+            <com.xuexiang.xui.widget.XUIKeyboardScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.xuexiang.xui.widget.layout.XUILinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/receipt_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+                    <com.xuexiang.xui.widget.layout.XUILinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center|top"
+                        android:layout_marginTop="@dimen/dp_40"
+                        android:layout_marginBottom="@dimen/dp_40"
+                        android:gravity="center|top"
+                        android:orientation="horizontal">
+
+                        <com.xuexiang.xui.widget.textview.supertextview.SuperButton
+                            style="@style/SuperButton.Gray"
+                            android:id="@+id/btn_cancel"
+                            android:layout_marginStart="20dp" />
+
+                        <com.xuexiang.xui.widget.textview.supertextview.SuperButton
+                            style="@style/SuperButton.Green"
+                            android:id="@+id/btn_submit"
+                            android:layout_marginStart="20dp"
+                            android:text="提交"
+                            tools:ignore="HardcodedText" />
+
+                    </com.xuexiang.xui.widget.layout.XUILinearLayout>
+                </com.xuexiang.xui.widget.layout.XUILinearLayout>
+            </com.xuexiang.xui.widget.XUIKeyboardScrollView>
+        </com.xuexiang.xui.widget.statelayout.StatefulLayout>
+    </com.xuexiang.xui.widget.layout.XUILinearLayout>
+</com.xuexiang.xui.widget.layout.XUILinearLayout>
