@@ -1,5 +1,6 @@
 package cn.zmmax.zebar.fragment.purchase.cuttingEntry;
 
+import android.graphics.Bitmap;
 import android.view.View;
 import android.widget.EditText;
 
@@ -12,6 +13,9 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import cn.zmmax.zebar.R;
 import cn.zmmax.zebar.base.BaseLabelFragment;
+import cn.zmmax.zebar.print.Printer;
+
+import static cn.zmmax.zebar.utils.UIUtils.showErrorDialog;
 
 public class CuttingEntryDetailFragment extends BaseLabelFragment {
 
@@ -73,7 +77,18 @@ public class CuttingEntryDetailFragment extends BaseLabelFragment {
                 ClickUtils.exitBy2Click();
                 break;
             case R.id.btn_sure:
-                ((CuttingEntryFragment) Objects.requireNonNull(getParentFragment())).sure();
+                try {
+                    Printer printer = new Printer(getContext());
+                    Bitmap bitmap = printer.textAsBitmap("料号：NF001931Q", 20f, 100);
+                    printer.addText(50, "品名：减震器".getBytes("GBK"));
+                    printer.addText(50, "备货单号：AA00019212".getBytes("GBK"));
+                    printer.addText(50, "数量：100".getBytes("GBK"));
+                    printer.addQRCode(50, 0, 100, 100, "AA00011221", bitmap);
+                    printer.startPrint();
+                } catch (Exception e) {
+                    showErrorDialog(getContext(), "打印错误：" + e.getMessage());
+                }
+                // ((CuttingEntryFragment) Objects.requireNonNull(getParentFragment())).sure();
                 break;
             case R.id.btn_select_work_code:
                 ((CuttingEntryFragment) Objects.requireNonNull(getParentFragment())).chooseWorkList();

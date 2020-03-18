@@ -1,6 +1,9 @@
 package cn.zmmax.zebar.base;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -38,7 +41,25 @@ public abstract class BaseBusinessFragment extends BaseFragment {
         initTitle();
         initViews();
         initListeners();
+        initBroadcast();
     }
+
+    private void initBroadcast() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("com.qs.scanCode");
+        getContext().registerReceiver(receiver, filter);
+    }
+
+
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action != null && action.equalsIgnoreCase("com.qs.scanCode")) {
+                getScanResult(intent.getStringExtra("code"));
+            }
+        }
+    };
 
     protected TitleBar initTitle() {
         TitleBar titleBar = TitleUtils.addTitleBarDynamic((ViewGroup) getRootView(), getPageTitle(), v -> popToBack());

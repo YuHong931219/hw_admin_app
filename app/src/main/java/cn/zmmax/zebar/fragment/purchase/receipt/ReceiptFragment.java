@@ -90,20 +90,24 @@ public class ReceiptFragment extends BaseBusinessFragment {
 
     @Override
     public void getScanResult(String result) {
-        QRCodeUtils qrCodeUtils = new QRCodeUtils(result);
-        if (QRCodeUtils.TYPE_0.equals(qrCodeUtils.getContentByPosition(0))) {
-            dnNo.setText(qrCodeUtils.getContentByPosition(1));
-            Map<String, Object> map = new HashMap<>();
-            map.put("dnNo", qrCodeUtils.getContentByPosition(2));
-            getReceiptData(map);
-        } else if (QRCodeUtils.TYPE_1.equals(qrCodeUtils.getContentByPosition(0))) {
-            Map<String,Object> map = new HashMap<>();
-            map.put("materialCode", qrCodeUtils.getContentByPosition(1));
-            map.put("batchNo", qrCodeUtils.getContentByPosition(2));
-            getReceiptData(map);
-        } else if (QRCodeUtils.TYPE_2.equals(qrCodeUtils.getContentByPosition(0))) {
-            locationCode.setText(qrCodeUtils.getContentByPosition(1));
-        }
+       try {
+           QRCodeUtils qrCodeUtils = new QRCodeUtils(result);
+           if (QRCodeUtils.TYPE_0.equals(qrCodeUtils.getContentByPosition(0))) {
+               dnNo.setText(qrCodeUtils.getContentByPosition(1));
+               Map<String, Object> map = new HashMap<>();
+               map.put("dnNo", qrCodeUtils.getContentByPosition(2));
+               getReceiptData(map);
+           } else if (QRCodeUtils.TYPE_1.equals(qrCodeUtils.getContentByPosition(0))) {
+               Map<String,Object> map = new HashMap<>();
+               map.put("materialCode", qrCodeUtils.getContentByPosition(1));
+               map.put("batchNo", qrCodeUtils.getContentByPosition(2));
+               getReceiptData(map);
+           } else if (QRCodeUtils.TYPE_2.equals(qrCodeUtils.getContentByPosition(0))) {
+               locationCode.setText(qrCodeUtils.getContentByPosition(1));
+           }
+       } catch (Exception e) {
+           showErrorDialog(getContext(), "条码解析错误：" + e.getMessage());
+       }
     }
 
     @SuppressWarnings("unchecked")

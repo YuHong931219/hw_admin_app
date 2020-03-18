@@ -68,7 +68,7 @@ public class BitmapTools {
 		int height = bmSrc.getHeight();
 		// 创建目标灰度图像
 		Bitmap bmpGray = null;
-		bmpGray = Bitmap.createBitmap(width, height, Config.RGB_565);
+		bmpGray = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
 		// 创建画布
 		Canvas c = new Canvas(bmpGray);
 		Paint paint = new Paint();
@@ -206,7 +206,7 @@ public class BitmapTools {
 			}
 		}
 
-		Bitmap temp = Bitmap.createBitmap(width, height, Config.ARGB_8888);
+		Bitmap temp = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 		temp.setPixels(pix, 0, width, 0, 0, width, height);
 		return temp;
 		//image.setImageBitmap(temp);  

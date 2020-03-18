@@ -13,6 +13,7 @@ import com.xuexiang.xui.widget.spinner.materialspinner.MaterialSpinner;
 import com.xuexiang.xui.widget.toast.XToast;
 import com.xuexiang.xutil.app.ActivityUtils;
 import com.xuexiang.xutil.common.StringUtils;
+import com.xuexiang.xutil.net.NetworkUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -57,6 +58,9 @@ public class IpSettingActivity extends BaseActivity {
     private void initData() {
         Gson gson = new Gson();
         String instanceIPList = instance.getIPList();
+        if (instanceIPList == null) {
+            return;
+        }
         try {
             JSONArray jsonArray = new JSONArray(instanceIPList);
             List<String> ipList = new ArrayList<>();
@@ -87,6 +91,10 @@ public class IpSettingActivity extends BaseActivity {
     void onClickSave() {
         if (TextUtils.isEmpty(ipAddress.getText().toString())) {
             showErrorDialog(getContext(), "请输入IP地址");
+            return;
+        }
+        if (!NetworkUtils.isHaveInternet()) {
+            showErrorDialog(getContext(), "当前环境没有网络");
             return;
         }
         NetWorkInfo netWorkInfo = new NetWorkInfo(ipAddress.getText().toString(), port.getText().toString());

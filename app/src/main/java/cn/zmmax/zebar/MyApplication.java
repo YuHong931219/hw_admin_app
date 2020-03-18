@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.os.Build;
+import android.os.Handler;
 import android.posapi.PosApi;
 import android.posapi.PrintQueue;
 import android.util.Log;
@@ -30,20 +31,19 @@ import com.xuexiang.xutil.tip.ToastUtils;
 import org.litepal.LitePalApplication;
 
 import cn.zmmax.scm.page.AppPageConfig;
+import cn.zmmax.zebar.broadcast.ButtonBroadcastReceiver;
+import cn.zmmax.zebar.broadcast.ScanBroadcastReceiver;
 import cn.zmmax.zebar.http.converter.MyGsonConverterFactory;
 import cn.zmmax.zebar.http.interceptor.CustomDynamicInterceptor;
 import cn.zmmax.zebar.http.interceptor.CustomExpiredInterceptor;
 import cn.zmmax.zebar.http.interceptor.CustomLoggingInterceptor;
 import cn.zmmax.zebar.http.interceptor.CustomTokenInterceptor;
-import cn.zmmax.zebar.receive.ScanBroadcastReceiver;
 import cn.zmmax.zebar.utils.SettingSPUtils;
 
 public class MyApplication extends Application {
     private static MyApplication instance;
     private static PosApi mPosSDK = null;
     private static PrintQueue mPrintQueue = null;
-    // SCAN按键监听
-    private ScanBroadcastReceiver scanBroadcastReceiver;
 
     @Override
     public void onCreate() {
@@ -63,18 +63,8 @@ public class MyApplication extends Application {
         initQRCode();
         initXCrash();
         initXPrint();
-        initBroadcast();
     }
 
-    private void initBroadcast() {
-        IntentFilter mFilter = new IntentFilter();
-        mFilter.addAction(PosApi.ACTION_POS_COMM_STATUS);
-        registerReceiver(scanBroadcastReceiver, mFilter);
-        scanBroadcastReceiver = new ScanBroadcastReceiver();
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("ismart.intent.scandown");
-        this.registerReceiver(scanBroadcastReceiver, intentFilter);
-    }
 
     private void initXPrint() {
         mPosSDK = PosApi.getInstance(this);
@@ -89,6 +79,20 @@ public class MyApplication extends Application {
         } else {
             mPosSDK.initPosDev(PosApi.PRODUCT_MODEL_IMA80M01);
         }
+        new Handler().postDelayed(() -> {
+            if (mPosSDK != null) {
+                mPosSDK.gpioControl((byte) 0x1E, 0, 1);
+                mPosSDK.extendSerialInit(3, 4, 1, 1, 1, 1);
+            }
+        }, 1000);
+        ButtonBroadcastReceiver buttonBroadcastReceiver = new ButtonBroadcastReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("ismart.intent.scandown");
+        registerReceiver(buttonBroadcastReceiver, intentFilter);
+        ScanBroadcastReceiver scanBroadcastReceiver = new ScanBroadcastReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(PosApi.ACTION_POS_COMM_STATUS);
+        registerReceiver(scanBroadcastReceiver, filter);
 
         //监听初始化回调结果
         mPosSDK.setOnComEventListener(mCommEventListener);
@@ -99,15 +103,10 @@ public class MyApplication extends Application {
         // 打印结果监听
         mPrintQueue.setOnPrintListener(new PrintQueue.OnPrintListener() {
             @Override
-            public void onFinish() {
-                // TODO Auto-generated method stub
-//                Toast.makeText(getInstance(), "打印完成",
-//                        Toast.LENGTH_SHORT).show();
-            }
+            public void onFinish() { }
 
             @Override
             public void onFailed(int state) {
-                // TODO Auto-generated method stub
                 switch (state) {
                     case PosApi.ERR_POS_PRINT_NO_PAPER:
                         // 打印缺纸
@@ -129,30 +128,26 @@ public class MyApplication extends Application {
             }
 
             @Override
-            public void onGetState(int arg0) {
-                // TODO Auto-generated method stub
-
-            }
+            public void onGetState(int arg0) { }
 
             @Override
             public void onPrinterSetting(int state) {
-                // TODO Auto-generated method stub
                 switch (state) {
                     case 0:
-//                        Toast.makeText(getInstance(), "持续有纸",
-//                                Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getInstance(), "持续有纸", Toast.LENGTH_SHORT).show();
                         break;
                     case 1:
                         Toast.makeText(getInstance(), "缺纸", Toast.LENGTH_SHORT).show();
                         break;
                     case 2:
-//                        Toast.makeText(QSService.this, "检测到黑标",
-//                                Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getInstance(), "检测到黑标", Toast.LENGTH_SHORT).show();
                         break;
                 }
             }
         });
     }
+
+
 
     private void initXCrash() {
         DebugSDK.initSDK(this)

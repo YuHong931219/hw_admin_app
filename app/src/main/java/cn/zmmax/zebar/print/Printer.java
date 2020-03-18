@@ -1,5 +1,6 @@
-package cn.zmmax.zebar.utils;
+package cn.zmmax.zebar.print;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -14,35 +15,31 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
-import com.google.zxing.EncodeHintType;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
-import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
-
-import java.util.Hashtable;
 
 import cn.zmmax.zebar.MyApplication;
-import cn.zmmax.zebar.print.BarcodeCreater;
-import cn.zmmax.zebar.print.BitmapTools;
 
 import static cn.zmmax.zebar.MyApplication.getInstance;
 
-/**
- * 打印工具类
- */
-public class PrintUtils {
+public class Printer {
 
-    private static byte mGpioPower = 0x1E;// PB14
-
-
-    static int mCurSerialNo = 3; // usart3
-    static int mBaudrate = 4; // 9600
 
     private static PosApi mPosSDK = MyApplication.getPosApi();
 
-    private static PrintQueue mPrintQueue = MyApplication.getPrintQueue();
+    private static PrintQueue mPrintQueue = null;
 
-    private static boolean isScan = true;
+    private Printer() {
+    }
+
+    public Printer(Context context) {
+        mPrintQueue = new PrintQueue(context, mPosSDK);
+        mPrintQueue.init();
+    }
+
+    public PrintQueue.TextData getTextData() {
+        return mPrintQueue.new TextData();
+    }
 
     /**
      * 打印一维条码
@@ -52,7 +49,7 @@ public class PrintUtils {
      * @param width：一维条码的宽度         58纸张最大宽度为58
      * @param height：一维条码的高度
      * @param blackLabel:是否进行黑标检测
-     * @param str2: 一维条码对象(不能是中文，若为中文则会报错)
+     * @param str2:                 一维条码对象(不能是中文，若为中文则会报错)
      */
     public static void printBarCode(int concentration, int left, int width, int height, boolean blackLabel, String str2) {
 
@@ -80,18 +77,18 @@ public class PrintUtils {
     /**
      * 打印二维码
      *
-     * @param concentration: 打印浓度 范围为25-65，超过范围后恢复至默认值25
+     * @param concentration:       打印浓度 范围为25-65，超过范围后恢复至默认值25
      * @param left：左边距，二维码与纸张左边的距离
      * @param width：二维码的宽度         58纸张最大宽度为58
      * @param height：二维码的高度
      * @param blackLabel:是否进行黑标检测
-     * @param str2: 二维码对象
+     * @param str2:                二维码对象
      */
-    public static void printQRCode(int concentration, int left, int width, int height, boolean blackLabel, String str2) {
+    public void printQRCode(int concentration, int left, int width, int height, boolean blackLabel, String str2) {
         if (str2 == null || str2.length() <= 0)
             return;
         // 生成二维码图片
-        Bitmap mBitmap = Create2DCode(str2, width, height);
+        Bitmap mBitmap = create2DCode(str2, width, height);
         if (mBitmap != null) {
             mBitmap = zoomImg(mBitmap, width, height);
             // 条码图片转成打印字节数组
@@ -168,14 +165,6 @@ public class PrintUtils {
     }
 
 
-    // 打开串口以及GPIO口
-    public static void openDevice() {
-        // open power
-        mPosSDK.gpioControl(mGpioPower, 0, 1);
-        mPosSDK.extendSerialInit(mCurSerialNo, mBaudrate, 1, 1, 1, 1);
-    }
-
-
     /**
      * 文字转图片
      *
@@ -183,7 +172,6 @@ public class PrintUtils {
      * @return
      */
     public static Bitmap word2bitmap(String str, int width) {
-
         Bitmap bMap = Bitmap.createBitmap(260, 40, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bMap);
         canvas.drawColor(Color.WHITE);
@@ -204,7 +192,7 @@ public class PrintUtils {
      * @param textSize 文字大小
      * @return
      */
-    public static Bitmap textAsBitmap(String text, float textSize, int width) {
+    public Bitmap textAsBitmap(String text, float textSize, int width) {
         TextPaint textPaint = new TextPaint();
         textPaint.setColor(Color.BLACK);
         textPaint.setTextSize(textSize);
@@ -241,11 +229,8 @@ public class PrintUtils {
      * @param height
      * @return
      */
-    private static Bitmap Create2DCode(String str, int width, int height) {
+    private Bitmap create2DCode(String str, int width, int height) {
         try {
-            Hashtable<EncodeHintType, Object> hints = new Hashtable<>();
-            hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
-            hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
             BitMatrix matrix = new QRCodeWriter().encode(str, BarcodeFormat.QR_CODE, width, height);
             width = matrix.getWidth();
             height = matrix.getHeight();
@@ -297,13 +282,30 @@ public class PrintUtils {
         return Bitmap.createBitmap(bm, 0, 0, width, height, matrix, true);
     }
 
-    /**
-     * 关闭app
-     */
-    public static void closeApp() {
-        if (mPosSDK != null) {
-            //关闭整个下层串口
-            mPosSDK.closeDev();
+    public PrintQueue addText(int concentration, PrintQueue.TextData data) {
+        mPrintQueue.addText(concentration, data);
+        return mPrintQueue;
+    }
+
+    public PrintQueue addText(int concentration, byte[] data) {
+        mPrintQueue.addText(concentration, data);
+        return mPrintQueue;
+    }
+
+    public PrintQueue addQRCode(int concentration, int left, int width, int height, String data, Bitmap bitmap) {
+        Bitmap qrCode = create2DCode(data, width, height);
+        if (qrCode != null) {
+            qrCode = zoomImg(qrCode, width, height);
+            Bitmap twoBtmap2One = twoBtmap2One(qrCode, bitmap);
+            byte[] printData = BitmapTools.bitmap2PrinterBytes(twoBtmap2One);
+            mPrintQueue.addBmp(concentration, left, width, height, printData);
         }
+        return mPrintQueue;
+    }
+
+    public PrintQueue startPrint() {
+        mPrintQueue.addAction(PrintQueue.PRINTER_CMD_KEY_CHECKBLACK);
+        mPrintQueue.printStart();
+        return mPrintQueue;
     }
 }

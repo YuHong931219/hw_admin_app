@@ -117,21 +117,17 @@ public class BitmapDeleteNoUseSpaceUtil {
             }
             bottom++;
         }
-
         // 获取内容区域的宽高
         int cropHeight = bitmap.getHeight() - bottom - top;
         int cropWidth = bitmap.getWidth() - left - right;
-
         // 获取内容区域的像素点
         int[] newPix = new int[cropWidth * cropHeight];
-
         int i = 0;
         for (int h = top; h < top + cropHeight; h++) {
             for (int w = left; w < left + cropWidth; w++) {
                 newPix[i++] = bitmap.getPixel(w, h);
             }
         }
-
         // 创建切割后的 bitmap， 针对彩色图，把 newPix 替换为 originBitmap 的 pixs
         return Bitmap.createBitmap(newPix, cropWidth, cropHeight, Bitmap.Config.ARGB_8888);
 

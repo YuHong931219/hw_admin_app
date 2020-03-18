@@ -2,7 +2,6 @@ package cn.zmmax.zebar.base;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -12,12 +11,11 @@ import com.xuexiang.xpage.base.XPageFragment;
 import com.xuexiang.xpage.core.CoreSwitchBean;
 
 import cn.zmmax.zebar.http.subscriber.HttpLoadingDialog;
-import cn.zmmax.zebar.receive.ScanBroadCastReceive;
 
 public class BaseActivity extends XPageActivity {
 
     public static final int REQUEST_CODE = 10001;
-    private ScanBroadCastReceive receiver;
+//    private ScanBroadCastReceive receiver;
     public IProgressLoader iProgressLoader;
 
     public interface ScanCallback {
@@ -74,11 +72,11 @@ public class BaseActivity extends XPageActivity {
     }
 
     public void initScanReceiver() {
-        receiver = new ScanBroadCastReceive();
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("cn.zmmax.zebar.scan");
-        intentFilter.addCategory("cn.zmmax.zebar.category.DEFAULT");
-        registerReceiver(receiver, intentFilter);
+//        receiver = new ScanBroadCastReceive();
+//        IntentFilter intentFilter = new IntentFilter();
+//        intentFilter.startPrint("cn.zmmax.zebar.scan");
+//        intentFilter.addCategory("cn.zmmax.zebar.category.DEFAULT");
+//        registerReceiver(receiver, intentFilter);
     }
 
     public void mobileScanBack(String code){
@@ -89,9 +87,9 @@ public class BaseActivity extends XPageActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (receiver != null) {
-            unregisterReceiver(receiver);
-        }
+//        if (receiver != null) {
+//            unregisterReceiver(receiver);
+//        }
     }
 
     @Override
