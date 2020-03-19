@@ -216,5 +216,11 @@
                 tools:ignore="HardcodedText" />
 
         </com.xuexiang.xui.widget.layout.XUILinearLayout>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/image_load"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"/>
     </com.xuexiang.xui.widget.layout.XUILinearLayout>
 </ScrollView>

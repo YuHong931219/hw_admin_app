@@ -105,7 +105,7 @@ public class Printer {
     /**
      * 打印bitmap
      */
-    public static void printBitmap(int concentration, int left, boolean blackLabel, Bitmap btMap1) {
+    public void printBitmap(int concentration, int left, boolean blackLabel, Bitmap btMap1) {
         // 图片获取并二值化
         Bitmap btMap = BitmapTools.gray2Binary(btMap1);
 
@@ -171,7 +171,7 @@ public class Printer {
      * @param str
      * @return
      */
-    public static Bitmap word2bitmap(String str, int width) {
+    public Bitmap word2bitmap(String str, int width) {
         Bitmap bMap = Bitmap.createBitmap(260, 40, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bMap);
         canvas.drawColor(Color.WHITE);
@@ -213,13 +213,14 @@ public class Printer {
      * @param bitmap2
      * @return
      */
-    public static Bitmap twoBtmap2One(Bitmap bitmap1, Bitmap bitmap2) {
+    public Bitmap twoBtmap2One(Bitmap bitmap1, Bitmap bitmap2) {
         Bitmap bitmap3 = Bitmap.createBitmap(bitmap1.getWidth(), bitmap1.getHeight() + bitmap2.getHeight(), bitmap1.getConfig());
         Canvas canvas = new Canvas(bitmap3);
         canvas.drawBitmap(bitmap1, new Matrix(), null);
         canvas.drawBitmap(bitmap2, 0, bitmap1.getHeight(), null);
         return bitmap3;
     }
+
 
     /**
      * 生成去除白边的二维码
@@ -292,12 +293,11 @@ public class Printer {
         return mPrintQueue;
     }
 
-    public PrintQueue addQRCode(int concentration, int left, int width, int height, String data, Bitmap bitmap) {
+    public PrintQueue addQRCode(int concentration, int left, int width, int height, String data) {
         Bitmap qrCode = create2DCode(data, width, height);
         if (qrCode != null) {
             qrCode = zoomImg(qrCode, width, height);
-            Bitmap twoBtmap2One = twoBtmap2One(qrCode, bitmap);
-            byte[] printData = BitmapTools.bitmap2PrinterBytes(twoBtmap2One);
+            byte[] printData = BitmapTools.bitmap2PrinterBytes(qrCode);
             mPrintQueue.addBmp(concentration, left, width, height, printData);
         }
         return mPrintQueue;

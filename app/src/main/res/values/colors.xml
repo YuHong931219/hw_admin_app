@@ -61,4 +61,6 @@
     <color name="red_start">#EE3455</color>
     <color name="red_end">#FFaa89</color>
     <color name="gray_icon">#99A0AA</color>
+    <color name="White">#FFF</color>
+    <color name="Black">#000</color>
 </resources>
