@@ -215,7 +215,7 @@ public class CuttingEntryFragment extends BaseBusinessFragment {
                                                         pieceFour.setText(StringUtils.concat("片宽:" + workMaterialResponse.getMaps().get(3).get("pieceWidth") + "   片数:" + workMaterialResponse.getMaps().get(3).get("pieceAmount")));
                                                         QRCodeUtils.layoutView(mActivity, linearLayout);
                                                         AppCompatImageView qrCode = linearLayout.findViewById(R.id.qrCode);
-                                                        Bitmap bitmap = QRCodeUtils.createQRCodeBitmap(StringUtils.concat("1#" + StringUtils.toString(apiResponse.getData())), 100, 100, "UTF-8", ErrorCorrectionLevel.L, Color.BLACK, Color.WHITE);
+                                                        Bitmap bitmap = QRCodeUtils.createQRCodeBitmap(StringUtils.concat("G#" + StringUtils.toString(apiResponse.getData())), 100, 100, "UTF-8", ErrorCorrectionLevel.L, Color.BLACK, Color.WHITE);
                                                         qrCode.setImageBitmap(bitmap);
                                                         Bitmap loadBitmapFromView = QRCodeUtils.loadBitmapFromView(linearLayout);
                                                         try {
