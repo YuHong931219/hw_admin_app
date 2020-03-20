@@ -3,8 +3,6 @@ package cn.zmmax.zebar.fragment.purchase.cuttingEntry;
 import android.view.View;
 import android.widget.EditText;
 
-import androidx.appcompat.widget.AppCompatImageView;
-
 import com.xuexiang.xui.widget.textview.autofit.AutoFitTextView;
 import com.xuexiang.xutil.common.ClickUtils;
 
@@ -39,13 +37,6 @@ public class CuttingEntryDetailFragment extends BaseLabelFragment {
     AutoFitTextView pieceAmount;
     @BindView(R.id.volume)
     EditText volume;
-//    @BindView(R.id.print_view)
-//    LinearLayout linearLayout;
-//    @BindView(R.id.qrCode)
-//    AppCompatImageView qrCode;
-    @BindView(R.id.image_load)
-    AppCompatImageView image_load;
-
 
     @Override
     public String getTitle() {
@@ -73,6 +64,7 @@ public class CuttingEntryDetailFragment extends BaseLabelFragment {
         pieceWidth.setText("");
         pieceAmount.setText("");
         volume.setText("");
+        locationCode.setText("");
     }
 
     @OnClick({R.id.btn_cancel, R.id.btn_sure, R.id.btn_select_work_code, R.id.btn_select_location})
@@ -82,13 +74,12 @@ public class CuttingEntryDetailFragment extends BaseLabelFragment {
                 ClickUtils.exitBy2Click();
                 break;
             case R.id.btn_sure:
-//                View linearLayout = getLayoutInflater().inflate(R.layout.test_layout, null);
+//                View linearLayout = getLayoutInflater().inflate(R.layout.print_cutting_entry, null);
 //                QRCodeUtils.layoutView(mActivity, linearLayout);
 //                AppCompatImageView qrCode = linearLayout.findViewById(R.id.qrCode);
 //                Bitmap bitmap = QRCodeUtils.createQRCodeBitmap("1#AA00011221", 100, 100, "UTF-8", ErrorCorrectionLevel.L, Color.BLACK, Color.WHITE);
 //                qrCode.setImageBitmap(bitmap);
 //                Bitmap loadBitmapFromView = QRCodeUtils.loadBitmapFromView(linearLayout);
-//                image_load.setImageBitmap(loadBitmapFromView);
 //                try {
 //                    Printer printer = new Printer(getContext());
 //                    printer.printBitmap(50, 0, false, loadBitmapFromView);
