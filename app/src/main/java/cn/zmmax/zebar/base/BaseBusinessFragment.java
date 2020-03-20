@@ -25,7 +25,10 @@ import com.xuexiang.xutil.tip.ToastUtils;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 import cn.zmmax.zebar.R;
+import cn.zmmax.zebar.http.subscriber.HttpLoadingDialog;
 
 import static android.app.Activity.RESULT_OK;
 import static com.xuexiang.xaop.consts.PermissionConsts.CAMERA;
@@ -42,12 +45,19 @@ public abstract class BaseBusinessFragment extends BaseFragment {
         initViews();
         initListeners();
         initBroadcast();
+        initLoading();
+    }
+
+    private void initLoading() {
+        if (iProgressLoader == null) {
+            iProgressLoader = new HttpLoadingDialog(Objects.requireNonNull(getContext()), "加载中...");
+        }
     }
 
     private void initBroadcast() {
         IntentFilter filter = new IntentFilter();
         filter.addAction("com.qs.scanCode");
-        getContext().registerReceiver(receiver, filter);
+        Objects.requireNonNull(getContext()).registerReceiver(receiver, filter);
     }
 
 

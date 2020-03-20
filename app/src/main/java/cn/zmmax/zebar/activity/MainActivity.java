@@ -14,6 +14,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.xuexiang.xui.adapter.FragmentAdapter;
 import com.xuexiang.xui.utils.ResUtils;
 import com.xuexiang.xui.utils.ThemeUtils;
+import com.xuexiang.xupdate.XUpdate;
 import com.xuexiang.xutil.app.ActivityUtils;
 import com.xuexiang.xutil.common.ClickUtils;
 import com.yarolegovich.slidingrootnav.SlidingRootNav;
@@ -38,6 +39,7 @@ import cn.zmmax.zebar.menu.DrawerAdapter;
 import cn.zmmax.zebar.menu.DrawerItem;
 import cn.zmmax.zebar.menu.SimpleItem;
 import cn.zmmax.zebar.menu.SpaceItem;
+import cn.zmmax.zebar.utils.SettingSPUtils;
 
 import static com.google.android.material.tabs.TabLayout.MODE_FIXED;
 
@@ -65,6 +67,7 @@ public class MainActivity extends BaseActivity implements DrawerAdapter.OnItemSe
     private void initViews() {
         openPage(PurchaseFragment.class);
         initTab();
+        initUpdateApk();
     }
 
     private void initTab() {
@@ -255,5 +258,18 @@ public class MainActivity extends BaseActivity implements DrawerAdapter.OnItemSe
             default:
                 break;
         }
+    }
+
+
+    private void initUpdateApk() {
+        SettingSPUtils instance = SettingSPUtils.getInstance();
+        String baseUrl = instance.getString("HTTP_TYPE", "") + instance.getString("IP", "") + ":" + instance.getString("PORT", "") + "/";
+        XUpdate.newBuild(this)
+                .updateUrl(baseUrl + "app/module/updateApk")
+                .supportBackgroundUpdate(true)
+                .isWifiOnly(false)
+                .isGet(true)
+                .topResId(R.mipmap.top_4)
+                .update();
     }
 }

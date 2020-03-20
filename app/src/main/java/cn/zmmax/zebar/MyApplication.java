@@ -24,6 +24,8 @@ import com.xuexiang.xpage.base.XPageActivity;
 import com.xuexiang.xqrcode.XQRCode;
 import com.xuexiang.xui.XUI;
 import com.xuexiang.xui.widget.toast.XToast;
+import com.xuexiang.xupdate.XUpdate;
+import com.xuexiang.xupdate.utils.UpdateUtils;
 import com.xuexiang.xutil.XUtil;
 import com.xuexiang.xutil.common.StringUtils;
 import com.xuexiang.xutil.tip.ToastUtils;
@@ -34,11 +36,15 @@ import cn.zmmax.scm.page.AppPageConfig;
 import cn.zmmax.zebar.broadcast.ButtonBroadcastReceiver;
 import cn.zmmax.zebar.broadcast.ScanBroadcastReceiver;
 import cn.zmmax.zebar.http.converter.MyGsonConverterFactory;
+import cn.zmmax.zebar.http.entity.AppUpdateEntityParser;
 import cn.zmmax.zebar.http.interceptor.CustomDynamicInterceptor;
 import cn.zmmax.zebar.http.interceptor.CustomExpiredInterceptor;
 import cn.zmmax.zebar.http.interceptor.CustomLoggingInterceptor;
 import cn.zmmax.zebar.http.interceptor.CustomTokenInterceptor;
+import cn.zmmax.zebar.http.interceptor.OKHttpUpdateHttpService;
 import cn.zmmax.zebar.utils.SettingSPUtils;
+
+import static com.xuexiang.xupdate.entity.UpdateError.ERROR.CHECK_NO_NEW_VERSION;
 
 public class MyApplication extends Application {
     private static MyApplication instance;
@@ -62,7 +68,28 @@ public class MyApplication extends Application {
         initAOP();
         initQRCode();
         initXCrash();
-        initXPrint();
+        initXUpdate();
+        //initXPrint();
+    }
+
+    private void initXUpdate() {
+        //设置版本更新出错的监听
+        XUpdate.get()
+                .debug(true)
+                .isWifiOnly(false)
+                .isGet(true)
+                .isAutoMode(false)
+                .param("versionCode", UpdateUtils.getVersionCode(this))
+                .param("appKey", getPackageName())
+                .setOnUpdateFailureListener(error -> {
+                    if (error.getCode() != CHECK_NO_NEW_VERSION) {
+                        ToastUtils.toast(error.toString());
+                    }
+                })
+                .supportSilentInstall(true)
+                .setIUpdateParser(new AppUpdateEntityParser())
+                .setIUpdateHttpService(new OKHttpUpdateHttpService())
+                .init(this);
     }
 
 
