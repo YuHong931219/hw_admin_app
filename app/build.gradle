@@ -90,6 +90,7 @@ dependencies {
     implementation 'com.github.xuexiangjys.XAOP:xaop-runtime:1.0.3'
     implementation 'com.github.xuexiangjys:XHttp2:1.0.2'
     implementation 'com.github.xuexiangjys:XUpdate:1.1.1'
+    implementation 'com.zhy:okhttputils:2.6.2'
     implementation ('com.systex.zmmax.XQRCodes:XQRCodes:1.0.0') {
         exclude group: 'com.google.zxing'
     }
