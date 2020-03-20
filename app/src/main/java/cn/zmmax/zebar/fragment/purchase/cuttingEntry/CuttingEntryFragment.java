@@ -1,12 +1,21 @@
 package cn.zmmax.zebar.fragment.purchase.cuttingEntry;
 
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseViewHolder;
 import com.google.android.material.tabs.TabLayout;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.xuexiang.xhttp2.XHttp;
 import com.xuexiang.xhttp2.request.CustomRequest;
 import com.xuexiang.xhttp2.subsciber.ProgressLoadingSubscriber;
@@ -29,15 +38,16 @@ import cn.zmmax.zebar.R;
 import cn.zmmax.zebar.base.BaseBusinessFragment;
 import cn.zmmax.zebar.base.BaseFragment;
 import cn.zmmax.zebar.base.BaseRequest;
+import cn.zmmax.zebar.bean.biz.LogiStoreActual;
 import cn.zmmax.zebar.bean.pro.CuttingEntryRequest;
 import cn.zmmax.zebar.bean.pro.ProWorkMaterialResponse;
 import cn.zmmax.zebar.http.api.ApiResponse;
 import cn.zmmax.zebar.http.api.ApiServer;
+import cn.zmmax.zebar.print.Printer;
 import cn.zmmax.zebar.utils.QRCodeUtils;
 import cn.zmmax.zebar.utils.ZmxUtil;
 
 import static cn.zmmax.zebar.utils.UIUtils.showErrorDialog;
-import static cn.zmmax.zebar.utils.UIUtils.showSuccessDialog;
 import static com.google.android.material.tabs.TabLayout.MODE_FIXED;
 
 @Page(name = "裁切入库", anim = CoreAnim.fade, category = PageCategory.purchase, extra = R.drawable.icon_entry, sort = 4)
@@ -50,8 +60,8 @@ public class CuttingEntryFragment extends BaseBusinessFragment {
     private CuttingEntryDetailFragment cuttingEntryDetailFragment;
     private CuttingEntryListFragment cuttingEntryListFragment;
     private ProWorkMaterialResponse proWorkMaterialResponse;
-    private List<String> workList = new ArrayList<>();
-    private List<String> locationList = new ArrayList<>();
+    private List<ProWorkMaterialResponse> workList = new ArrayList<>();
+    private List<LogiStoreActual> storeActualList = new ArrayList<>();
 
     @Override
     protected int getLayoutId() {
@@ -72,8 +82,9 @@ public class CuttingEntryFragment extends BaseBusinessFragment {
                 cuttingEntryDetailFragment.batchNo.setText(StringUtils.concat(supplierCode + "-" + caseNo));
                 cuttingEntryDetailFragment.batchNo.setTag(supplierBatchNo);
                 cuttingEntryDetailFragment.needAmount.setText(amount);
-                Map<String,Object> map = new HashMap<>();
+                Map<String, Object> map = new HashMap<>();
                 map.put("materialCode", materialCode);
+                map.put("batchNo", cuttingEntryDetailFragment.batchNo.getText().toString());
                 map.put("caseNo", caseNo);
                 getScanData(map);
             } else if (QRCodeUtils.TYPE_2.equals(qrCodeUtils.getContentByPosition(0))) {
@@ -86,8 +97,9 @@ public class CuttingEntryFragment extends BaseBusinessFragment {
                 cuttingEntryDetailFragment.batchNo.setText(StringUtils.concat(supplierCode + "-" + caseNo));
                 cuttingEntryDetailFragment.batchNo.setTag(supplierBatchNo);
                 cuttingEntryDetailFragment.needAmount.setText(amount);
-                Map<String,Object> map = new HashMap<>();
+                Map<String, Object> map = new HashMap<>();
                 map.put("materialCode", materialCode);
+                map.put("batchNo", cuttingEntryDetailFragment.batchNo.getText().toString());
                 map.put("caseNo", caseNo);
                 getScanData(map);
             }
@@ -97,7 +109,7 @@ public class CuttingEntryFragment extends BaseBusinessFragment {
     }
 
     @SuppressWarnings("unchecked")
-    private void getScanData(Map<String,Object> map) {
+    private void getScanData(Map<String, Object> map) {
         CustomRequest request = XHttp.custom();
         ProgressLoadingSubscriber<ApiResponse> tipRequestSubscriber = request.call(request.create(ApiServer.class)
                 .postHttp("/app/cutting/selectWorkMaterial", new BaseRequest<>(map)))
@@ -111,10 +123,7 @@ public class CuttingEntryFragment extends BaseBusinessFragment {
                             cuttingEntryDetailFragment.materialName.setText(cuttingEntryRequest.getMaterialName());
                             cuttingEntryDetailFragment.spec.setText(cuttingEntryRequest.getSpec());
                             cuttingEntryDetailFragment.unit.setText(cuttingEntryRequest.getUnit());
-                            locationList.addAll(cuttingEntryRequest.getLocationList());
-                            if (locationList.size() == 1) {
-                                cuttingEntryDetailFragment.locationCode.setText(locationList.get(0));
-                            }
+                            storeActualList.addAll(cuttingEntryRequest.getStoreActualList());
                             List<ProWorkMaterialResponse> proWorkMaterialResponseList = cuttingEntryRequest.getWorkList();
                             if (proWorkMaterialResponseList.size() == 1) {
                                 ProWorkMaterialResponse proWorkMaterialResponse = proWorkMaterialResponseList.get(0);
@@ -126,21 +135,39 @@ public class CuttingEntryFragment extends BaseBusinessFragment {
                                 cuttingEntryDetailFragment.pieceWidth.setText(proWorkMaterialResponse.getPieceWidth());
                                 cuttingEntryDetailFragment.pieceAmount.setText(proWorkMaterialResponse.getPieceAmount());
                             } else if (proWorkMaterialResponseList.size() > 1) {
-                                for (int i = 0; i < proWorkMaterialResponseList.size(); i++) {
-                                    workList.add(proWorkMaterialResponseList.get(i).getWorkCode() + "#" + proWorkMaterialResponseList.get(i).getPieceWidth());
-                                }
-                                int i = 0;
+                                workList.addAll(proWorkMaterialResponseList);
+                                View dialogView = getLayoutInflater().inflate(R.layout.common_list, null);
+                                RecyclerView list = dialogView.findViewById(R.id.list);
+                                WorkAdapter workAdapter = new WorkAdapter(R.layout.dialog_select_work);
+                                list.setAdapter(workAdapter);
+                                workAdapter.setNewData(proWorkMaterialResponseList);
+                                workAdapter.setOnItemChildClickListener((adapter, view, position) -> {
+                                    if (view.getId() == R.id.checkbox || view.getId() == R.id.card_layout) {
+                                        boolean isCheck = workAdapter.getData().get(position).getChecked();
+                                        for (ProWorkMaterialResponse proWorkMaterialResponse : workAdapter.getData()) {
+                                            proWorkMaterialResponse.setChecked(false);
+                                        }
+                                        workAdapter.getData().get(position).setChecked(!isCheck);
+                                        workAdapter.notifyDataSetChanged();
+                                    }
+                                });
                                 new MaterialDialog.Builder(Objects.requireNonNull(getContext()))
                                         .title("选择工单")
-                                        .items(workList)
-                                        .cancelable(false)
-                                        .itemsCallbackSingleChoice(i, (dialog, itemView, which, text) -> {
-                                            String workList = CuttingEntryFragment.this.workList.get(which);
-                                            String[] split = workList.split("#");
-                                            cuttingEntryDetailFragment.workCode.setText(split[0]);
-                                            cuttingEntryDetailFragment.pieceWidth.setText(split[1]);
-                                            return true;
-                                        }).show();
+                                        .customView(dialogView, false)
+                                        .positiveText("确定")
+                                        .onPositive((dialog, which) -> {
+                                            for (ProWorkMaterialResponse proWorkMaterialResponse : workAdapter.getData()) {
+                                                if (proWorkMaterialResponse.getChecked()) {
+                                                    cuttingEntryDetailFragment.workCode.setText(proWorkMaterialResponse.getWorkCode());
+                                                    cuttingEntryDetailFragment.pieceWidth.setText(proWorkMaterialResponse.getPieceWidth());
+                                                    cuttingEntryDetailFragment.materialCode.setTag(proWorkMaterialResponse.getReplacedMaterial());
+                                                }
+                                            }
+                                            dialog.dismiss();
+                                        })
+                                        .negativeText("取消")
+                                        .onNegative((dialog, which) -> dialog.dismiss())
+                                        .show();
                             }
                         } else {
                             showErrorDialog(getContext(), apiResponse.getMsg());
@@ -164,10 +191,52 @@ public class CuttingEntryFragment extends BaseBusinessFragment {
                                 @Override
                                 protected void onSuccess(ApiResponse apiResponse) {
                                     if (apiResponse.isSuccess()) {
-                                        showSuccessDialog(getContext(), "提交成功");
-                                        cuttingEntryListFragment.myAdapter.setNewData(new ArrayList<>());
-                                        viewPager.setCurrentItem(0);
-                                        cuttingEntryDetailFragment.clear();
+                                        new MaterialDialog.Builder(Objects.requireNonNull(getContext()))
+                                                .title("提示")
+                                                .iconRes(R.drawable.icon_success)
+                                                .content("提交成功，是否打印数据？")
+                                                .positiveText("打印")
+                                                .cancelable(false)
+                                                .negativeText("取消")
+                                                .onPositive((dialog1, i) -> {
+                                                    for (ProWorkMaterialResponse workMaterialResponse : cuttingEntryListFragment.myAdapter.getData()) {
+                                                        View linearLayout = getLayoutInflater().inflate(R.layout.print_cutting_entry, null);
+                                                        TextView materialCode = linearLayout.findViewById(R.id.material_code);
+                                                        TextView spec = linearLayout.findViewById(R.id.spec);
+                                                        TextView pieceOne = linearLayout.findViewById(R.id.piece_one);
+                                                        TextView pieceTwo = linearLayout.findViewById(R.id.piece_two);
+                                                        TextView pieceThree = linearLayout.findViewById(R.id.piece_three);
+                                                        TextView pieceFour = linearLayout.findViewById(R.id.piece_four);
+                                                        materialCode.setText(StringUtils.concat("料号:" + workMaterialResponse.getMaterialCode()));
+                                                        spec.setText(StringUtils.concat("规格:" + workMaterialResponse.getSpec()));
+                                                        pieceOne.setText(StringUtils.concat("片宽:" + workMaterialResponse.getMaps().get(0).get("pieceWidth") + "   片数:" + workMaterialResponse.getMaps().get(0).get("pieceAmount")));
+                                                        pieceTwo.setText(StringUtils.concat("片宽:" + workMaterialResponse.getMaps().get(1).get("pieceWidth") + "   片数:" + workMaterialResponse.getMaps().get(1).get("pieceAmount")));
+                                                        pieceThree.setText(StringUtils.concat("片宽:" + workMaterialResponse.getMaps().get(2).get("pieceWidth") + "   片数:" + workMaterialResponse.getMaps().get(2).get("pieceAmount")));
+                                                        pieceFour.setText(StringUtils.concat("片宽:" + workMaterialResponse.getMaps().get(3).get("pieceWidth") + "   片数:" + workMaterialResponse.getMaps().get(3).get("pieceAmount")));
+                                                        QRCodeUtils.layoutView(mActivity, linearLayout);
+                                                        AppCompatImageView qrCode = linearLayout.findViewById(R.id.qrCode);
+                                                        Bitmap bitmap = QRCodeUtils.createQRCodeBitmap(StringUtils.concat("1#" + StringUtils.toString(apiResponse.getData())), 100, 100, "UTF-8", ErrorCorrectionLevel.L, Color.BLACK, Color.WHITE);
+                                                        qrCode.setImageBitmap(bitmap);
+                                                        Bitmap loadBitmapFromView = QRCodeUtils.loadBitmapFromView(linearLayout);
+                                                        try {
+                                                            Printer printer = new Printer(getContext());
+                                                            printer.printBitmap(50, 50, false, loadBitmapFromView);
+                                                            printer.startPrint();
+                                                        } catch (Exception e) {
+                                                            showErrorDialog(getContext(), "打印错误：" + e.getMessage());
+                                                        }
+                                                        dialog1.dismiss();
+                                                        cuttingEntryListFragment.myAdapter.setNewData(new ArrayList<>());
+                                                        viewPager.setCurrentItem(0);
+                                                        cuttingEntryDetailFragment.clear();
+                                                    }
+                                                })
+                                                .onNegative((childDialog, i) -> {
+                                                    childDialog.dismiss();
+                                                    cuttingEntryListFragment.myAdapter.setNewData(new ArrayList<>());
+                                                    viewPager.setCurrentItem(0);
+                                                    cuttingEntryDetailFragment.clear();
+                                                }).show();
                                     } else {
                                         showErrorDialog(getContext(), apiResponse.getMsg());
                                     }
@@ -195,35 +264,75 @@ public class CuttingEntryFragment extends BaseBusinessFragment {
     }
 
     void chooseLocationList() {
-        if (locationList == null || locationList.size() == 1) {
+        if (storeActualList == null || storeActualList.size() == 0) {
             return;
         }
-        int i = 0;
+        View dialogView = getLayoutInflater().inflate(R.layout.common_list, null);
+        RecyclerView list = dialogView.findViewById(R.id.list);
+        DialogAdapter dialogAdapter = new DialogAdapter(R.layout.dialog_select_actual_store);
+        list.setAdapter(dialogAdapter);
+        dialogAdapter.setNewData(storeActualList);
+        dialogAdapter.setOnItemChildClickListener((adapter, view, position) -> {
+            if (view.getId() == R.id.checkbox || view.getId() == R.id.card_layout) {
+               boolean isCheck = dialogAdapter.getData().get(position).isChecked();
+                for (LogiStoreActual logiStoreActual : dialogAdapter.getData()) {
+                    logiStoreActual.setChecked(false);
+                }
+                dialogAdapter.getData().get(position).setChecked(!isCheck);
+                dialogAdapter.notifyDataSetChanged();
+            }
+        });
         new MaterialDialog.Builder(Objects.requireNonNull(getContext()))
                 .title("选择库位")
-                .items(locationList)
-                .cancelable(false)
-                .itemsCallbackSingleChoice(i, (dialog, itemView, which, text) -> {
-                    cuttingEntryDetailFragment.locationCode.setText(locationList.get(which));
-                    return true;
-                }).show();
+                .customView(dialogView, false)
+                .positiveText("确定")
+                .onPositive((dialog, which) -> {
+                    for (LogiStoreActual logiStoreActual : dialogAdapter.getData()) {
+                        if (logiStoreActual.isChecked()) {
+                            cuttingEntryDetailFragment.locationCode.setText(logiStoreActual.getLocationCode());
+                            cuttingEntryDetailFragment.needAmount.setText(StringUtils.toString(logiStoreActual.getAmount()));
+                        }
+                    }
+                    dialog.dismiss();
+                })
+                .negativeText("取消")
+                .onNegative((dialog, which) -> dialog.dismiss())
+                .show();
     }
 
     void chooseWorkList() {
-        if (workList == null || workList.size() == 1) {
-            return;
-        }
-        int i = 0;
+        View dialogView = getLayoutInflater().inflate(R.layout.common_list, null);
+        RecyclerView list = dialogView.findViewById(R.id.list);
+        WorkAdapter workAdapter = new WorkAdapter(R.layout.dialog_select_work);
+        list.setAdapter(workAdapter);
+        workAdapter.setNewData(workList);
+        workAdapter.setOnItemChildClickListener((adapter, view, position) -> {
+            if (view.getId() == R.id.checkbox || view.getId() == R.id.card_layout) {
+                boolean isCheck = workAdapter.getData().get(position).getChecked();
+                for (ProWorkMaterialResponse proWorkMaterialResponse : workAdapter.getData()) {
+                    proWorkMaterialResponse.setChecked(false);
+                }
+                workAdapter.getData().get(position).setChecked(!isCheck);
+                workAdapter.notifyDataSetChanged();
+            }
+        });
         new MaterialDialog.Builder(Objects.requireNonNull(getContext()))
                 .title("选择工单")
-                .items(workList)
-                .itemsCallbackSingleChoice(i, (dialog, itemView, which, text) -> {
-                    String workList = CuttingEntryFragment.this.workList.get(which);
-                    String[] split = workList.split("#");
-                    cuttingEntryDetailFragment.workCode.setText(split[0]);
-                    cuttingEntryDetailFragment.pieceWidth.setText(split[1]);
-                    return true;
-                }).show();
+                .customView(dialogView, false)
+                .positiveText("确定")
+                .onPositive((dialog, which) -> {
+                    for (ProWorkMaterialResponse proWorkMaterialResponse : workAdapter.getData()) {
+                        if (proWorkMaterialResponse.getChecked()) {
+                            cuttingEntryDetailFragment.workCode.setText(proWorkMaterialResponse.getWorkCode());
+                            cuttingEntryDetailFragment.pieceWidth.setText(proWorkMaterialResponse.getPieceWidth());
+                            cuttingEntryDetailFragment.materialCode.setTag(proWorkMaterialResponse.getReplacedMaterial());
+                        }
+                    }
+                    dialog.dismiss();
+                })
+                .negativeText("取消")
+                .onNegative((dialog, which) -> dialog.dismiss())
+                .show();
     }
 
     void sure() {
@@ -235,11 +344,11 @@ public class CuttingEntryFragment extends BaseBusinessFragment {
             return;
         }
         if (TextUtils.isEmpty(cuttingEntryDetailFragment.workCode.getText().toString())) {
-            showErrorDialog(getContext(),"工单不能为空");
+            showErrorDialog(getContext(), "工单不能为空");
             return;
         }
         if (TextUtils.isEmpty(cuttingEntryDetailFragment.locationCode.getText().toString())) {
-            showErrorDialog(getContext(),"库位不能为空");
+            showErrorDialog(getContext(), "库位不能为空");
             return;
         }
         if (proWorkMaterialResponse.getMaps() == null) {
@@ -278,23 +387,24 @@ public class CuttingEntryFragment extends BaseBusinessFragment {
                             pieceAmountFour.setError("片数不能为空");
                             return;
                         }
-                        Map<String,Object> map = new HashMap<>();
+                        Map<String, Object> map = new HashMap<>();
                         map.put("pieceWidth", pieceAmountOne.getText().toString());
                         map.put("pieceAmount", pieceWidthOne.getText().toString());
                         proWorkMaterialResponse.getMaps().add(map);
-                        Map<String,Object> twoMap = new HashMap<>();
+                        Map<String, Object> twoMap = new HashMap<>();
                         twoMap.put("pieceWidth", pieceWidthTwo.getText().toString());
                         twoMap.put("pieceAmount", pieceAmountTwo.getText().toString());
                         proWorkMaterialResponse.getMaps().add(twoMap);
-                        Map<String,Object> threeMap = new HashMap<>();
+                        Map<String, Object> threeMap = new HashMap<>();
                         threeMap.put("pieceWidth", pieceWidthThree.getText().toString());
                         threeMap.put("pieceAmount", pieceAmountThree.getText().toString());
                         proWorkMaterialResponse.getMaps().add(threeMap);
-                        Map<String,Object> fourMap = new HashMap<>();
+                        Map<String, Object> fourMap = new HashMap<>();
                         fourMap.put("pieceWidth", pieceWidthFour.getText().toString());
                         fourMap.put("pieceAmount", pieceAmountFour.getText().toString());
                         proWorkMaterialResponse.getMaps().add(fourMap);
                         viewPager.setCurrentItem(1);
+                        proWorkMaterialResponse.setReplacedMaterial((String) cuttingEntryDetailFragment.materialCode.getTag());
                         proWorkMaterialResponse.setMaterialCode(cuttingEntryDetailFragment.materialCode.getText().toString());
                         proWorkMaterialResponse.setMaterialName(cuttingEntryDetailFragment.materialName.getText().toString());
                         proWorkMaterialResponse.setSpec(cuttingEntryDetailFragment.spec.getText().toString());
@@ -311,7 +421,7 @@ public class CuttingEntryFragment extends BaseBusinessFragment {
                         dialog.dismiss();
                         proWorkMaterialResponse = new ProWorkMaterialResponse();
                         workList.clear();
-                        locationList.clear();
+                        storeActualList.clear();
                     })
                     .negativeText("取消")
                     .onNegative((dialog, which) -> dialog.dismiss()).show();
@@ -326,11 +436,45 @@ public class CuttingEntryFragment extends BaseBusinessFragment {
             proWorkMaterialResponse.setCuttingLength(cuttingEntryDetailFragment.volume.getText().toString());
             proWorkMaterialResponse.setNeedAmount(new BigDecimal(cuttingEntryDetailFragment.needAmount.getText().toString()));
             proWorkMaterialResponse.setSupplierBatchNo((String) cuttingEntryDetailFragment.batchNo.getTag());
+            proWorkMaterialResponse.setReplacedMaterial((String) cuttingEntryDetailFragment.materialCode.getTag());
             cuttingEntryListFragment.myAdapter.addData(proWorkMaterialResponse);
             cuttingEntryListFragment.statusLayout.showContent();
             cuttingEntryDetailFragment.clear();
             proWorkMaterialResponse = new ProWorkMaterialResponse();
-            locationList.clear();
+            storeActualList.clear();
+        }
+    }
+
+    class DialogAdapter extends BaseQuickAdapter<LogiStoreActual, BaseViewHolder> {
+
+        DialogAdapter(int layoutResId) {
+            super(layoutResId);
+        }
+
+        @Override
+        protected void convert(@NonNull BaseViewHolder helper, LogiStoreActual item) {
+            helper.setChecked(R.id.checkbox, item.isChecked());
+            helper.addOnClickListener(R.id.checkbox, R.id.card_layout);
+            helper.setText(R.id.material_code, item.getMaterialCode());
+            helper.setText(R.id.batch_no, item.getBatchNo());
+            helper.setText(R.id.location_code, item.getLocationCode());
+            helper.setText(R.id.amount, StringUtils.toString(item.getAmount()));
+        }
+    }
+
+    class WorkAdapter extends BaseQuickAdapter<ProWorkMaterialResponse, BaseViewHolder> {
+
+        WorkAdapter(int layoutResId) {
+            super(layoutResId);
+        }
+
+        @Override
+        protected void convert(@NonNull BaseViewHolder helper, ProWorkMaterialResponse item) {
+            helper.setChecked(R.id.checkbox, item.getChecked());
+            helper.addOnClickListener(R.id.checkbox, R.id.card_layout);
+            helper.setText(R.id.work_code, item.getWorkCode());
+            helper.setText(R.id.piece_width, item.getPieceWidth());
+            helper.setText(R.id.replace_material, item.getReplacedMaterial());
         }
     }
 }

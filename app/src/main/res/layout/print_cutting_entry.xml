@@ -10,13 +10,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginStart="110dp">
+        android:layout_marginStart="115dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginStart="10dp">
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -26,6 +25,7 @@
                 android:gravity="center">
 
                 <TextView
+                    android:id="@+id/material_code"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:text="料号：NF001931Q"
@@ -34,25 +34,46 @@
                     tools:ignore="HardcodedText" />
 
                 <TextView
+                    android:id="@+id/spec"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:text="品名：减震器"
+                    android:text="规格：减震器"
                     android:textColor="@color/black"
                     android:gravity="center|start"
                     tools:ignore="HardcodedText" />
 
                 <TextView
+                    android:id="@+id/piece_one"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:text="备货单号：AA00019212"
+                    android:text="片宽: 100  片数： 100"
                     android:gravity="center|start"
                     android:textColor="@color/black"
                     tools:ignore="HardcodedText" />
 
                 <TextView
+                    android:id="@+id/piece_two"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:text="数量：100"
+                    android:text="片宽：100"
+                    android:gravity="center|start"
+                    android:textColor="@color/black"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/piece_three"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="片宽：100"
+                    android:gravity="center|start"
+                    android:textColor="@color/black"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/piece_four"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="片宽：100"
                     android:gravity="center|start"
                     android:textColor="@color/black"
                     tools:ignore="HardcodedText" />

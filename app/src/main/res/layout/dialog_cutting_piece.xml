@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.xuexiang.xui.widget.XUIKeyboardScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -53,6 +53,7 @@
 
                     <EditText
                         android:id="@+id/piece_amount_one"
+                        android:inputType="number"
                         style="@style/EditText.Normal.Content" />
 
                 </com.xuexiang.xui.widget.layout.XUILinearLayout>
@@ -87,6 +88,7 @@
                     <EditText
                         android:id="@+id/piece_width_two"
                         style="@style/EditText.Normal.Content"
+                        android:inputType="numberDecimal"
                         tools:ignore="TextFields" />
 
                 </com.xuexiang.xui.widget.layout.XUILinearLayout>
@@ -102,6 +104,7 @@
 
                     <EditText
                         android:id="@+id/piece_amount_two"
+                        android:inputType="number"
                         style="@style/EditText.Normal.Content" />
 
                 </com.xuexiang.xui.widget.layout.XUILinearLayout>
@@ -135,6 +138,7 @@
 
                     <EditText
                         android:id="@+id/piece_width_three"
+                        android:inputType="numberDecimal"
                         style="@style/EditText.Normal.Content"
                         tools:ignore="TextFields" />
 
@@ -151,6 +155,7 @@
 
                     <EditText
                         android:id="@+id/piece_amount_three"
+                        android:inputType="number"
                         style="@style/EditText.Normal.Content" />
 
                 </com.xuexiang.xui.widget.layout.XUILinearLayout>
@@ -184,6 +189,7 @@
 
                     <EditText
                         android:id="@+id/piece_width_four"
+                        android:inputType="numberDecimal"
                         style="@style/EditText.Normal.Content"
                         tools:ignore="TextFields" />
 
@@ -200,10 +206,11 @@
 
                     <EditText
                         android:id="@+id/piece_amount_four"
+                        android:inputType="number"
                         style="@style/EditText.Normal.Content" />
 
                 </com.xuexiang.xui.widget.layout.XUILinearLayout>
             </com.xuexiang.xui.widget.layout.XUILinearLayout>
         </com.xuexiang.xui.widget.layout.XUILinearLayout>
     </com.xuexiang.xui.widget.layout.XUILinearLayout>
-</com.xuexiang.xui.widget.XUIKeyboardScrollView>
+</ScrollView>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.xuexiang.xui.widget.XUIKeyboardScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,7 +8,7 @@
     <com.xuexiang.xui.widget.statelayout.StatefulLayout
         android:id="@+id/status_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="#EEE"
         app:stf_animationEnabled="true"
         app:stf_inAnimation="@android:anim/slide_in_left"
@@ -16,7 +16,7 @@
 
         <com.xuexiang.xui.widget.layout.XUILinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <com.xuexiang.xui.widget.layout.XUILinearLayout style="@style/CardLayOut">
@@ -61,4 +61,4 @@
             </com.xuexiang.xui.widget.layout.XUILinearLayout>
         </com.xuexiang.xui.widget.layout.XUILinearLayout>
     </com.xuexiang.xui.widget.statelayout.StatefulLayout>
-</com.xuexiang.xui.widget.XUIKeyboardScrollView>
+</ScrollView>

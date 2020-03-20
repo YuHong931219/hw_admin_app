@@ -20,4 +20,6 @@ public class LogiStoreActual {
     private String locationCode;
 
     private BigDecimal amount;
+
+    private boolean checked = false;
 }

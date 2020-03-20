@@ -35,4 +35,8 @@ public class ProWorkMaterialResponse {
 
     private List<Map<String,Object>> maps;
 
+    private Boolean checked = false;
+
+    private String replacedMaterial;
+
 }
