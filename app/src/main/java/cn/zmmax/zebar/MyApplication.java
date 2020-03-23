@@ -28,6 +28,7 @@ import com.xuexiang.xupdate.XUpdate;
 import com.xuexiang.xupdate.utils.UpdateUtils;
 import com.xuexiang.xutil.XUtil;
 import com.xuexiang.xutil.common.StringUtils;
+import com.xuexiang.xutil.system.DeviceUtils;
 import com.xuexiang.xutil.tip.ToastUtils;
 
 import org.litepal.LitePalApplication;
@@ -69,7 +70,10 @@ public class MyApplication extends Application {
         initQRCode();
         initXCrash();
         initXUpdate();
-        //initXPrint();
+        String deviceModel = DeviceUtils.getDeviceModel();
+        if (deviceModel.contains("5501")) {
+            initXPrint();   
+        }
     }
 
     private void initXUpdate() {
