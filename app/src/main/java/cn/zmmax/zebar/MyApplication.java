@@ -72,7 +72,7 @@ public class MyApplication extends Application {
         initXUpdate();
         String deviceModel = DeviceUtils.getDeviceModel();
         if (deviceModel.contains("5501")) {
-            initXPrint();   
+            initXPrint();
         }
     }
 
