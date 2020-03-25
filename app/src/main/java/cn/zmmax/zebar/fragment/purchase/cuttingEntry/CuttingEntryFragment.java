@@ -23,7 +23,9 @@ import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.enums.CoreAnim;
 import com.xuexiang.xpage.enums.PageCategory;
 import com.xuexiang.xui.adapter.FragmentAdapter;
+import com.xuexiang.xui.widget.dialog.materialdialog.DialogAction;
 import com.xuexiang.xui.widget.dialog.materialdialog.MaterialDialog;
+import com.xuexiang.xui.widget.dialog.materialdialog.internal.MDButton;
 import com.xuexiang.xutil.common.StringUtils;
 
 import java.math.BigDecimal;
@@ -341,16 +343,17 @@ public class CuttingEntryFragment extends BaseBusinessFragment {
             return;
         }
         if (proWorkMaterialResponse == null) {
-            return;
+            proWorkMaterialResponse = new ProWorkMaterialResponse();
+//            return;
         }
-        if (TextUtils.isEmpty(cuttingEntryDetailFragment.workCode.getText().toString())) {
-            showErrorDialog(getContext(), "工单不能为空");
-            return;
-        }
-        if (TextUtils.isEmpty(cuttingEntryDetailFragment.locationCode.getText().toString())) {
-            showErrorDialog(getContext(), "库位不能为空");
-            return;
-        }
+//        if (TextUtils.isEmpty(cuttingEntryDetailFragment.workCode.getText().toString())) {
+//            showErrorDialog(getContext(), "工单不能为空");
+//            return;
+//        }
+//        if (TextUtils.isEmpty(cuttingEntryDetailFragment.locationCode.getText().toString())) {
+//            showErrorDialog(getContext(), "库位不能为空");
+//            return;
+//        }
         if (proWorkMaterialResponse.getMaps() == null) {
             proWorkMaterialResponse.setMaps(new ArrayList<>());
         }
@@ -366,65 +369,69 @@ public class CuttingEntryFragment extends BaseBusinessFragment {
             EditText pieceAmountThree = dialogView.findViewById(R.id.piece_amount_three);
             EditText pieceWidthFour = dialogView.findViewById(R.id.piece_width_four);
             EditText pieceAmountFour = dialogView.findViewById(R.id.piece_amount_four);
-            new MaterialDialog.Builder(Objects.requireNonNull(getContext()))
+            MaterialDialog materialDialog = new MaterialDialog.Builder(Objects.requireNonNull(getContext()))
                     .title("请输入片宽和片数")
                     .customView(dialogView, false)
                     .positiveText("确定")
-                    .onPositive((dialog, which) -> {
-                        if (TextUtils.isEmpty(pieceAmountOne.getText().toString())) {
-                            pieceAmountOne.setError("片数不能为空");
-                            return;
-                        }
-                        if (!TextUtils.isEmpty(pieceWidthTwo.getText().toString()) && TextUtils.isEmpty(pieceAmountTwo.getText().toString())) {
-                            pieceAmountTwo.setError("片数不能为空");
-                            return;
-                        }
-                        if (!TextUtils.isEmpty(pieceWidthThree.getText().toString()) && TextUtils.isEmpty(pieceAmountThree.getText().toString())) {
-                            pieceAmountThree.setError("片数不能为空");
-                            return;
-                        }
-                        if (!TextUtils.isEmpty(pieceWidthFour.getText().toString()) && TextUtils.isEmpty(pieceAmountFour.getText().toString())) {
-                            pieceAmountFour.setError("片数不能为空");
-                            return;
-                        }
-                        Map<String, Object> map = new HashMap<>();
-                        map.put("pieceWidth", pieceAmountOne.getText().toString());
-                        map.put("pieceAmount", pieceWidthOne.getText().toString());
-                        proWorkMaterialResponse.getMaps().add(map);
-                        Map<String, Object> twoMap = new HashMap<>();
-                        twoMap.put("pieceWidth", pieceWidthTwo.getText().toString());
-                        twoMap.put("pieceAmount", pieceAmountTwo.getText().toString());
-                        proWorkMaterialResponse.getMaps().add(twoMap);
-                        Map<String, Object> threeMap = new HashMap<>();
-                        threeMap.put("pieceWidth", pieceWidthThree.getText().toString());
-                        threeMap.put("pieceAmount", pieceAmountThree.getText().toString());
-                        proWorkMaterialResponse.getMaps().add(threeMap);
-                        Map<String, Object> fourMap = new HashMap<>();
-                        fourMap.put("pieceWidth", pieceWidthFour.getText().toString());
-                        fourMap.put("pieceAmount", pieceAmountFour.getText().toString());
-                        proWorkMaterialResponse.getMaps().add(fourMap);
-                        viewPager.setCurrentItem(1);
-                        proWorkMaterialResponse.setReplacedMaterial((String) cuttingEntryDetailFragment.materialCode.getTag());
-                        proWorkMaterialResponse.setMaterialCode(cuttingEntryDetailFragment.materialCode.getText().toString());
-                        proWorkMaterialResponse.setMaterialName(cuttingEntryDetailFragment.materialName.getText().toString());
-                        proWorkMaterialResponse.setSpec(cuttingEntryDetailFragment.spec.getText().toString());
-                        proWorkMaterialResponse.setUnit(cuttingEntryDetailFragment.unit.getText().toString());
-                        proWorkMaterialResponse.setBatchNo(cuttingEntryDetailFragment.batchNo.getText().toString());
-                        proWorkMaterialResponse.setWorkCode(cuttingEntryDetailFragment.workCode.getText().toString());
-                        proWorkMaterialResponse.setLocationCode(cuttingEntryDetailFragment.locationCode.getText().toString());
-                        proWorkMaterialResponse.setCuttingLength(cuttingEntryDetailFragment.volume.getText().toString());
-                        proWorkMaterialResponse.setNeedAmount(new BigDecimal(cuttingEntryDetailFragment.needAmount.getText().toString()));
-                        proWorkMaterialResponse.setSupplierBatchNo((String) cuttingEntryDetailFragment.batchNo.getTag());
-                        cuttingEntryListFragment.myAdapter.addData(proWorkMaterialResponse);
-                        cuttingEntryListFragment.statusLayout.showContent();
-                        cuttingEntryDetailFragment.clear();
-                        dialog.dismiss();
-                        proWorkMaterialResponse = new ProWorkMaterialResponse();
-                        workList.clear();
-                        storeActualList.clear();
-                    })
+                    .onPositive(null)
                     .negativeText("取消")
                     .onNegative((dialog, which) -> dialog.dismiss()).show();
+            materialDialog.setOnShowListener(dialog -> {
+                MDButton mdButton = materialDialog.getActionButton(DialogAction.POSITIVE);
+                mdButton.setOnClickListener(v -> {
+                    if (TextUtils.isEmpty(pieceAmountOne.getText().toString())) {
+                        pieceAmountOne.setError("片数不能为空");
+                        return;
+                    }
+                    if (!TextUtils.isEmpty(pieceWidthTwo.getText().toString()) && TextUtils.isEmpty(pieceAmountTwo.getText().toString())) {
+                        pieceAmountTwo.setError("片数不能为空");
+                        return;
+                    }
+                    if (!TextUtils.isEmpty(pieceWidthThree.getText().toString()) && TextUtils.isEmpty(pieceAmountThree.getText().toString())) {
+                        pieceAmountThree.setError("片数不能为空");
+                        return;
+                    }
+                    if (!TextUtils.isEmpty(pieceWidthFour.getText().toString()) && TextUtils.isEmpty(pieceAmountFour.getText().toString())) {
+                        pieceAmountFour.setError("片数不能为空");
+                        return;
+                    }
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("pieceWidth", pieceAmountOne.getText().toString());
+                    map.put("pieceAmount", pieceWidthOne.getText().toString());
+                    proWorkMaterialResponse.getMaps().add(map);
+                    Map<String, Object> twoMap = new HashMap<>();
+                    twoMap.put("pieceWidth", pieceWidthTwo.getText().toString());
+                    twoMap.put("pieceAmount", pieceAmountTwo.getText().toString());
+                    proWorkMaterialResponse.getMaps().add(twoMap);
+                    Map<String, Object> threeMap = new HashMap<>();
+                    threeMap.put("pieceWidth", pieceWidthThree.getText().toString());
+                    threeMap.put("pieceAmount", pieceAmountThree.getText().toString());
+                    proWorkMaterialResponse.getMaps().add(threeMap);
+                    Map<String, Object> fourMap = new HashMap<>();
+                    fourMap.put("pieceWidth", pieceWidthFour.getText().toString());
+                    fourMap.put("pieceAmount", pieceAmountFour.getText().toString());
+                    proWorkMaterialResponse.getMaps().add(fourMap);
+                    viewPager.setCurrentItem(1);
+                    proWorkMaterialResponse.setReplacedMaterial((String) cuttingEntryDetailFragment.materialCode.getTag());
+                    proWorkMaterialResponse.setMaterialCode(cuttingEntryDetailFragment.materialCode.getText().toString());
+                    proWorkMaterialResponse.setMaterialName(cuttingEntryDetailFragment.materialName.getText().toString());
+                    proWorkMaterialResponse.setSpec(cuttingEntryDetailFragment.spec.getText().toString());
+                    proWorkMaterialResponse.setUnit(cuttingEntryDetailFragment.unit.getText().toString());
+                    proWorkMaterialResponse.setBatchNo(cuttingEntryDetailFragment.batchNo.getText().toString());
+                    proWorkMaterialResponse.setWorkCode(cuttingEntryDetailFragment.workCode.getText().toString());
+                    proWorkMaterialResponse.setLocationCode(cuttingEntryDetailFragment.locationCode.getText().toString());
+                    proWorkMaterialResponse.setCuttingLength(cuttingEntryDetailFragment.volume.getText().toString());
+                    proWorkMaterialResponse.setNeedAmount(new BigDecimal(cuttingEntryDetailFragment.needAmount.getText().toString()));
+                    proWorkMaterialResponse.setSupplierBatchNo((String) cuttingEntryDetailFragment.batchNo.getTag());
+                    cuttingEntryListFragment.myAdapter.addData(proWorkMaterialResponse);
+                    cuttingEntryListFragment.statusLayout.showContent();
+                    cuttingEntryDetailFragment.clear();
+                    //dialog.dismiss();
+                    proWorkMaterialResponse = new ProWorkMaterialResponse();
+                    workList.clear();
+                    storeActualList.clear();
+                });
+            });
         } else {
             proWorkMaterialResponse.setMaterialCode(cuttingEntryDetailFragment.materialCode.getText().toString());
             proWorkMaterialResponse.setMaterialName(cuttingEntryDetailFragment.materialName.getText().toString());

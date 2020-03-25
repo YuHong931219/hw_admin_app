@@ -152,4 +152,10 @@ public abstract class BaseBusinessFragment extends BaseFragment {
             }
         });
     }
+
+    @Override
+    public void onDestroy() {
+        Objects.requireNonNull(getContext()).unregisterReceiver(receiver);
+        super.onDestroy();
+    }
 }
