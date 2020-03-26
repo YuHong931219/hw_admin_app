@@ -248,14 +248,14 @@
     <string name="label_daishouliang">待收量</string>
     <string name="label_tongzhidan">出库通知单</string>
     <string name="label_kehumingcheng">客户名称</string>
-    <string name="label_need_amount">需求量</string>
+    <string name="label_need_amount">库存量</string>
     <string name="label_beiliaodan">备料单</string>
     <string name="label_qitaoqu">齐套区</string>
     <string name="label_team">班组</string>
     <string name="label_chanxian">产线</string>
     <string name="label_states">状态</string>
     <string name="label_beiliaoqu">备料区</string>
-    <string name="label_xuqiuliang">需求量</string>
+    <string name="label_xuqiuliang">库存量</string>
     <string name="label_shenqingliang">申请量</string>
     <string name="label_beiliaoliang">备料量</string>
     <string name="label_cunkuliang">存库量</string>

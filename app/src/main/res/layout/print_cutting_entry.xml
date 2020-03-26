@@ -27,69 +27,77 @@
                 <TextView
                     android:id="@+id/material_code"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="28dp"
                     android:text="料号：NF001931Q"
                     android:textColor="@color/black"
+                    android:textSize="11.5dp"
                     android:gravity="center|start"
                     tools:ignore="HardcodedText" />
 
                 <TextView
                     android:id="@+id/spec"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="28dp"
                     android:text="规格：减震器"
                     android:textColor="@color/black"
+                    android:textSize="11.5dp"
                     android:gravity="center|start"
                     tools:ignore="HardcodedText" />
 
                 <TextView
                     android:id="@+id/piece_one"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="28dp"
                     android:text="片宽: 100  片数： 100"
                     android:gravity="center|start"
                     android:textColor="@color/black"
+                    android:textSize="11.5dp"
                     tools:ignore="HardcodedText" />
 
                 <TextView
                     android:id="@+id/piece_two"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="28dp"
                     android:text="片宽：100"
                     android:gravity="center|start"
                     android:textColor="@color/black"
+                    android:textSize="11.5dp"
                     tools:ignore="HardcodedText" />
 
                 <TextView
                     android:id="@+id/piece_three"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="28dp"
                     android:text="片宽：100"
                     android:gravity="center|start"
                     android:textColor="@color/black"
+                    android:textSize="11.5dp"
                     tools:ignore="HardcodedText" />
 
                 <TextView
                     android:id="@+id/piece_four"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="28dp"
                     android:text="片宽：100"
                     android:gravity="center|start"
                     android:textColor="@color/black"
+                    android:textSize="11.5sp"
                     tools:ignore="HardcodedText" />
 
             </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="110dp"
+            android:layout_width="120dp"
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/qrCode"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:layout_marginTop="50dp"
+                android:layout_marginLeft="10dp" />
 
         </LinearLayout>
     </LinearLayout>
