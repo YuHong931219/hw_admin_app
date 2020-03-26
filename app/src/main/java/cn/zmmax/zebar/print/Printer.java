@@ -95,10 +95,13 @@ public class Printer {
             byte[] printData = BitmapTools.bitmap2PrinterBytes(mBitmap);
             //打印图片
             mPosSDK.printImage(concentration, left, mBitmap.getWidth(), mBitmap.getHeight(), printData);
+
             //黑标走纸
             if (blackLabel) {
                 mPosSDK.printerSetting(1, 0);
             }
+            mPosSDK.printText(1,"\n".getBytes(),0);
+            mPosSDK.printText(1,"\n".getBytes(),0);
         }
     }
 

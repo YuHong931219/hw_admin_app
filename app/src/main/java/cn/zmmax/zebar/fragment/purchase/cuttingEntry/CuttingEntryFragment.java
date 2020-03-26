@@ -52,7 +52,7 @@ import cn.zmmax.zebar.utils.ZmxUtil;
 import static cn.zmmax.zebar.utils.UIUtils.showErrorDialog;
 import static com.google.android.material.tabs.TabLayout.MODE_FIXED;
 
-@Page(name = "裁切入库", anim = CoreAnim.fade, category = PageCategory.purchase, extra = R.drawable.icon_entry, sort = 4)
+@Page(name = "裁切拆箱", anim = CoreAnim.fade, category = PageCategory.purchase, extra = R.drawable.icon_entry, sort = 4)
 public class CuttingEntryFragment extends BaseBusinessFragment {
 
     @BindView(R.id.tab_layout)
@@ -64,6 +64,7 @@ public class CuttingEntryFragment extends BaseBusinessFragment {
     private ProWorkMaterialResponse proWorkMaterialResponse;
     private List<ProWorkMaterialResponse> workList = new ArrayList<>();
     private List<LogiStoreActual> storeActualList = new ArrayList<>();
+    private List<ProWorkMaterialResponse> proWorkMaterialResponseList = new ArrayList<>();
 
     @Override
     protected int getLayoutId() {
@@ -83,7 +84,6 @@ public class CuttingEntryFragment extends BaseBusinessFragment {
                 String caseNo = qrCodeUtils.getContentByPosition(5);
                 cuttingEntryDetailFragment.batchNo.setText(StringUtils.concat(supplierCode + "-" + caseNo));
                 cuttingEntryDetailFragment.batchNo.setTag(supplierBatchNo);
-                cuttingEntryDetailFragment.needAmount.setText(amount);
                 Map<String, Object> map = new HashMap<>();
                 map.put("materialCode", materialCode);
                 map.put("batchNo", cuttingEntryDetailFragment.batchNo.getText().toString());
@@ -98,7 +98,6 @@ public class CuttingEntryFragment extends BaseBusinessFragment {
                 String caseNo = qrCodeUtils.getContentByPosition(5);
                 cuttingEntryDetailFragment.batchNo.setText(StringUtils.concat(supplierCode + "-" + caseNo));
                 cuttingEntryDetailFragment.batchNo.setTag(supplierBatchNo);
-                cuttingEntryDetailFragment.needAmount.setText(amount);
                 Map<String, Object> map = new HashMap<>();
                 map.put("materialCode", materialCode);
                 map.put("batchNo", cuttingEntryDetailFragment.batchNo.getText().toString());
@@ -120,22 +119,23 @@ public class CuttingEntryFragment extends BaseBusinessFragment {
                     @Override
                     protected void onSuccess(ApiResponse apiResponse) {
                         if (apiResponse.isSuccess()) {
+                            storeActualList.clear();
+                            proWorkMaterialResponseList.clear();
                             CuttingEntryRequest cuttingEntryRequest = (CuttingEntryRequest) ZmxUtil.jsonToJavaBean(apiResponse.getBody(), CuttingEntryRequest.class);
                             cuttingEntryDetailFragment.materialCode.setText(cuttingEntryRequest.getMaterialCode());
                             cuttingEntryDetailFragment.materialName.setText(cuttingEntryRequest.getMaterialName());
                             cuttingEntryDetailFragment.spec.setText(cuttingEntryRequest.getSpec());
                             cuttingEntryDetailFragment.unit.setText(cuttingEntryRequest.getUnit());
                             storeActualList.addAll(cuttingEntryRequest.getStoreActualList());
-                            List<ProWorkMaterialResponse> proWorkMaterialResponseList = cuttingEntryRequest.getWorkList();
+                            proWorkMaterialResponseList = cuttingEntryRequest.getWorkList();
+                            if(null != storeActualList && storeActualList.size() == 1){
+                                cuttingEntryDetailFragment.locationCode.setText(storeActualList.get(0).getLocationCode());
+                                cuttingEntryDetailFragment.needAmount.setText(storeActualList.get(0).getAmount().toString());
+                            }
                             if (proWorkMaterialResponseList.size() == 1) {
                                 ProWorkMaterialResponse proWorkMaterialResponse = proWorkMaterialResponseList.get(0);
-                                cuttingEntryDetailFragment.materialCode.setText(proWorkMaterialResponse.getMaterialCode());
-                                cuttingEntryDetailFragment.materialName.setText(proWorkMaterialResponse.getMaterialName());
-                                cuttingEntryDetailFragment.spec.setText(proWorkMaterialResponse.getSpec());
-                                cuttingEntryDetailFragment.unit.setText(proWorkMaterialResponse.getUnit());
-                                cuttingEntryDetailFragment.workCode.setText(proWorkMaterialResponse.getWorkCode());
-                                cuttingEntryDetailFragment.pieceWidth.setText(proWorkMaterialResponse.getPieceWidth());
-                                cuttingEntryDetailFragment.pieceAmount.setText(proWorkMaterialResponse.getPieceAmount());
+                                cuttingEntryDetailFragment.materialCode.setTag(proWorkMaterialResponse.getReplacedMaterial());
+                                cuttingEntryDetailFragment.locationCode.setText(proWorkMaterialResponse.getPieceWidth());
                             } else if (proWorkMaterialResponseList.size() > 1) {
                                 workList.addAll(proWorkMaterialResponseList);
                                 View dialogView = getLayoutInflater().inflate(R.layout.common_list, null);
@@ -160,8 +160,8 @@ public class CuttingEntryFragment extends BaseBusinessFragment {
                                         .onPositive((dialog, which) -> {
                                             for (ProWorkMaterialResponse proWorkMaterialResponse : workAdapter.getData()) {
                                                 if (proWorkMaterialResponse.getChecked()) {
-                                                    cuttingEntryDetailFragment.workCode.setText(proWorkMaterialResponse.getWorkCode());
                                                     cuttingEntryDetailFragment.pieceWidth.setText(proWorkMaterialResponse.getPieceWidth());
+                                                    cuttingEntryDetailFragment.workCode.setText(proWorkMaterialResponse.getWorkCode());
                                                     cuttingEntryDetailFragment.materialCode.setTag(proWorkMaterialResponse.getReplacedMaterial());
                                                 }
                                             }
@@ -217,7 +217,7 @@ public class CuttingEntryFragment extends BaseBusinessFragment {
                                                         pieceFour.setText(StringUtils.concat("片宽:" + workMaterialResponse.getMaps().get(3).get("pieceWidth") + "   片数:" + workMaterialResponse.getMaps().get(3).get("pieceAmount")));
                                                         QRCodeUtils.layoutView(mActivity, linearLayout);
                                                         AppCompatImageView qrCode = linearLayout.findViewById(R.id.qrCode);
-                                                        Bitmap bitmap = QRCodeUtils.createQRCodeBitmap(StringUtils.concat("G#" + StringUtils.toString(apiResponse.getData())), 100, 100, "UTF-8", ErrorCorrectionLevel.L, Color.BLACK, Color.WHITE);
+                                                        Bitmap bitmap = QRCodeUtils.createQRCodeBitmap(StringUtils.concat("G#" + StringUtils.toString(apiResponse.getData())), 80, 80, "UTF-8", ErrorCorrectionLevel.L, Color.BLACK, Color.WHITE);
                                                         qrCode.setImageBitmap(bitmap);
                                                         Bitmap loadBitmapFromView = QRCodeUtils.loadBitmapFromView(linearLayout);
                                                         try {
@@ -344,16 +344,17 @@ public class CuttingEntryFragment extends BaseBusinessFragment {
         }
         if (proWorkMaterialResponse == null) {
             proWorkMaterialResponse = new ProWorkMaterialResponse();
-//            return;
+            return;
         }
-//        if (TextUtils.isEmpty(cuttingEntryDetailFragment.workCode.getText().toString())) {
-//            showErrorDialog(getContext(), "工单不能为空");
-//            return;
-//        }
-//        if (TextUtils.isEmpty(cuttingEntryDetailFragment.locationCode.getText().toString())) {
-//            showErrorDialog(getContext(), "库位不能为空");
-//            return;
-//        }
+        if (TextUtils.isEmpty(cuttingEntryDetailFragment.workCode.getText().toString())) {
+            showErrorDialog(getContext(), "工单不能为空");
+            return;
+        }
+
+        if (TextUtils.isEmpty(cuttingEntryDetailFragment.locationCode.getText().toString())) {
+            showErrorDialog(getContext(), "库位不能为空");
+            return;
+        }
         if (proWorkMaterialResponse.getMaps() == null) {
             proWorkMaterialResponse.setMaps(new ArrayList<>());
         }
@@ -387,17 +388,29 @@ public class CuttingEntryFragment extends BaseBusinessFragment {
                         pieceAmountTwo.setError("片数不能为空");
                         return;
                     }
+                    if (TextUtils.isEmpty(pieceWidthTwo.getText().toString()) && !TextUtils.isEmpty(pieceAmountTwo.getText().toString())) {
+                        pieceWidthTwo.setError("片宽不能为空");
+                        return;
+                    }
                     if (!TextUtils.isEmpty(pieceWidthThree.getText().toString()) && TextUtils.isEmpty(pieceAmountThree.getText().toString())) {
                         pieceAmountThree.setError("片数不能为空");
+                        return;
+                    }
+                    if (TextUtils.isEmpty(pieceWidthThree.getText().toString()) && !TextUtils.isEmpty(pieceAmountThree.getText().toString())) {
+                        pieceWidthThree.setError("片宽不能为空");
                         return;
                     }
                     if (!TextUtils.isEmpty(pieceWidthFour.getText().toString()) && TextUtils.isEmpty(pieceAmountFour.getText().toString())) {
                         pieceAmountFour.setError("片数不能为空");
                         return;
                     }
+                    if (TextUtils.isEmpty(pieceWidthFour.getText().toString()) && !TextUtils.isEmpty(pieceAmountFour.getText().toString())) {
+                        pieceWidthFour.setError("片宽不能为空");
+                        return;
+                    }
                     Map<String, Object> map = new HashMap<>();
-                    map.put("pieceWidth", pieceAmountOne.getText().toString());
-                    map.put("pieceAmount", pieceWidthOne.getText().toString());
+                    map.put("pieceWidth", pieceWidthOne.getText().toString());
+                    map.put("pieceAmount", pieceAmountOne.getText().toString());
                     proWorkMaterialResponse.getMaps().add(map);
                     Map<String, Object> twoMap = new HashMap<>();
                     twoMap.put("pieceWidth", pieceWidthTwo.getText().toString());
@@ -426,7 +439,7 @@ public class CuttingEntryFragment extends BaseBusinessFragment {
                     cuttingEntryListFragment.myAdapter.addData(proWorkMaterialResponse);
                     cuttingEntryListFragment.statusLayout.showContent();
                     cuttingEntryDetailFragment.clear();
-                    //dialog.dismiss();
+                    dialog.dismiss();
                     proWorkMaterialResponse = new ProWorkMaterialResponse();
                     workList.clear();
                     storeActualList.clear();
