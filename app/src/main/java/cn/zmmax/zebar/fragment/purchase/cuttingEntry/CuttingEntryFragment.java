@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import butterknife.BindView;
 import cn.zmmax.zebar.R;
@@ -47,6 +48,7 @@ import cn.zmmax.zebar.http.api.ApiResponse;
 import cn.zmmax.zebar.http.api.ApiServer;
 import cn.zmmax.zebar.print.Printer;
 import cn.zmmax.zebar.utils.QRCodeUtils;
+import cn.zmmax.zebar.utils.SettingSPUtils;
 import cn.zmmax.zebar.utils.ZmxUtil;
 
 import static cn.zmmax.zebar.utils.UIUtils.showErrorDialog;
@@ -65,6 +67,7 @@ public class CuttingEntryFragment extends BaseBusinessFragment {
     private List<ProWorkMaterialResponse> workList = new ArrayList<>();
     private List<LogiStoreActual> storeActualList = new ArrayList<>();
     private List<ProWorkMaterialResponse> proWorkMaterialResponseList = new ArrayList<>();
+    private SettingSPUtils instance;
 
     @Override
     protected int getLayoutId() {
@@ -75,13 +78,21 @@ public class CuttingEntryFragment extends BaseBusinessFragment {
     public void getScanResult(String result) {
         try {
             QRCodeUtils qrCodeUtils = new QRCodeUtils(result);
+            String supplierCode = qrCodeUtils.getContentByPosition(4);
+            String caseNo = qrCodeUtils.getContentByPosition(5);
+            // 对数据汇总的数据判断是否重复
+            List<ProWorkMaterialResponse> dataList = cuttingEntryListFragment.myAdapter.getData();
+            for (ProWorkMaterialResponse workMaterialResponse : dataList) {
+                if(workMaterialResponse.getBatchNo().equals(StringUtils.concat(supplierCode + "-" + caseNo))){
+                    showErrorDialog(getContext(), "当前二维码不能重复扫描");
+                    return;
+                }
+            }
             if (QRCodeUtils.TYPE_1.equals(qrCodeUtils.getContentByPosition(0))) {
                 // 料号 + 批号 + 数量 + 供应商编号 + 箱号
                 String materialCode = qrCodeUtils.getContentByPosition(1);
                 String supplierBatchNo = qrCodeUtils.getContentByPosition(2);
                 String amount = qrCodeUtils.getContentByPosition(3);
-                String supplierCode = qrCodeUtils.getContentByPosition(4);
-                String caseNo = qrCodeUtils.getContentByPosition(5);
                 cuttingEntryDetailFragment.batchNo.setText(StringUtils.concat(supplierCode + "-" + caseNo));
                 cuttingEntryDetailFragment.batchNo.setTag(supplierBatchNo);
                 Map<String, Object> map = new HashMap<>();
@@ -94,8 +105,6 @@ public class CuttingEntryFragment extends BaseBusinessFragment {
                 String materialCode = qrCodeUtils.getContentByPosition(1);
                 String supplierBatchNo = qrCodeUtils.getContentByPosition(2);
                 String amount = qrCodeUtils.getContentByPosition(3);
-                String supplierCode = qrCodeUtils.getContentByPosition(4);
-                String caseNo = qrCodeUtils.getContentByPosition(5);
                 cuttingEntryDetailFragment.batchNo.setText(StringUtils.concat(supplierCode + "-" + caseNo));
                 cuttingEntryDetailFragment.batchNo.setTag(supplierBatchNo);
                 Map<String, Object> map = new HashMap<>();
@@ -134,8 +143,9 @@ public class CuttingEntryFragment extends BaseBusinessFragment {
                             }
                             if (proWorkMaterialResponseList.size() == 1) {
                                 ProWorkMaterialResponse proWorkMaterialResponse = proWorkMaterialResponseList.get(0);
+                                cuttingEntryDetailFragment.pieceWidth.setText(proWorkMaterialResponse.getPieceWidth());
+                                cuttingEntryDetailFragment.workCode.setText(proWorkMaterialResponse.getWorkCode());
                                 cuttingEntryDetailFragment.materialCode.setTag(proWorkMaterialResponse.getReplacedMaterial());
-                                cuttingEntryDetailFragment.locationCode.setText(proWorkMaterialResponse.getPieceWidth());
                             } else if (proWorkMaterialResponseList.size() > 1) {
                                 workList.addAll(proWorkMaterialResponseList);
                                 View dialogView = getLayoutInflater().inflate(R.layout.common_list, null);
@@ -201,7 +211,9 @@ public class CuttingEntryFragment extends BaseBusinessFragment {
                                                 .cancelable(false)
                                                 .negativeText("取消")
                                                 .onPositive((dialog1, i) -> {
-                                                    for (ProWorkMaterialResponse workMaterialResponse : cuttingEntryListFragment.myAdapter.getData()) {
+                                                    List<ProWorkMaterialResponse> data = cuttingEntryListFragment.myAdapter.getData();
+                                                    for (int k = 0; k <  data.size(); k++) {
+                                                        ProWorkMaterialResponse workMaterialResponse = data.get(k);
                                                         View linearLayout = getLayoutInflater().inflate(R.layout.print_cutting_entry, null);
                                                         TextView materialCode = linearLayout.findViewById(R.id.material_code);
                                                         TextView spec = linearLayout.findViewById(R.id.spec);
@@ -217,7 +229,11 @@ public class CuttingEntryFragment extends BaseBusinessFragment {
                                                         pieceFour.setText(StringUtils.concat("片宽:" + workMaterialResponse.getMaps().get(3).get("pieceWidth") + "   片数:" + workMaterialResponse.getMaps().get(3).get("pieceAmount")));
                                                         QRCodeUtils.layoutView(mActivity, linearLayout);
                                                         AppCompatImageView qrCode = linearLayout.findViewById(R.id.qrCode);
-                                                        Bitmap bitmap = QRCodeUtils.createQRCodeBitmap(StringUtils.concat("G#" + StringUtils.toString(apiResponse.getData())), 80, 80, "UTF-8", ErrorCorrectionLevel.L, Color.BLACK, Color.WHITE);
+                                                        String[] splitArr = apiResponse.getData().toString().split("#");
+                                                        String group_code1 = instance.getString("GROUP_CODE", "");
+                                                        String arr = splitArr[k];
+                                                        String group_code = group_code1 + arr;
+                                                        Bitmap bitmap = QRCodeUtils.createQRCodeBitmap(StringUtils.concat("G#" + StringUtils.toString(group_code)), 80, 80, "UTF-8", ErrorCorrectionLevel.L, Color.BLACK, Color.WHITE);
                                                         qrCode.setImageBitmap(bitmap);
                                                         Bitmap loadBitmapFromView = QRCodeUtils.loadBitmapFromView(linearLayout);
                                                         try {
@@ -251,6 +267,7 @@ public class CuttingEntryFragment extends BaseBusinessFragment {
 
     @Override
     protected void initViews() {
+        instance = SettingSPUtils.getInstance();
         cuttingEntryDetailFragment = new CuttingEntryDetailFragment();
         cuttingEntryListFragment = new CuttingEntryListFragment();
         FragmentAdapter<BaseFragment> adapter = new FragmentAdapter<>(getChildFragmentManager());
@@ -346,7 +363,7 @@ public class CuttingEntryFragment extends BaseBusinessFragment {
             proWorkMaterialResponse = new ProWorkMaterialResponse();
             return;
         }
-        if (TextUtils.isEmpty(cuttingEntryDetailFragment.workCode.getText().toString())) {
+       if (TextUtils.isEmpty(cuttingEntryDetailFragment.workCode.getText().toString())) {
             showErrorDialog(getContext(), "工单不能为空");
             return;
         }
