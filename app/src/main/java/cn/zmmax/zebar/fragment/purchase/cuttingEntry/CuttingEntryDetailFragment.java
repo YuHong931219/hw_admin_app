@@ -25,12 +25,12 @@ public class CuttingEntryDetailFragment extends BaseLabelFragment {
     AutoFitTextView unit;
     @BindView(R.id.batch_no)
     AutoFitTextView batchNo;
-    @BindView(R.id.need_amount)
-    AutoFitTextView needAmount;
+//    @BindView(R.id.need_amount)
+//    AutoFitTextView needAmount;
     @BindView(R.id.work_code)
     EditText workCode;
-    @BindView(R.id.location_code)
-    EditText locationCode;
+//    @BindView(R.id.location_code)
+//    EditText locationCode;
     @BindView(R.id.piece_width)
     AutoFitTextView pieceWidth;
     @BindView(R.id.piece_amount)
@@ -59,15 +59,16 @@ public class CuttingEntryDetailFragment extends BaseLabelFragment {
         spec.setText("");
         unit.setText("");
         batchNo.setText("");
-        needAmount.setText("");
+//        needAmount.setText("");
         workCode.setText("");
         pieceWidth.setText("");
         pieceAmount.setText("");
         volume.setText("");
-        locationCode.setText("");
+//        locationCode.setText("");
     }
 
-    @OnClick({R.id.btn_cancel, R.id.btn_sure, R.id.btn_select_work_code, R.id.btn_select_location})
+//    @OnClick({R.id.btn_cancel, R.id.btn_sure, R.id.btn_select_work_code, R.id.btn_select_location})
+@OnClick({R.id.btn_cancel, R.id.btn_sure, R.id.btn_select_work_code})
     void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_cancel:
@@ -92,9 +93,9 @@ public class CuttingEntryDetailFragment extends BaseLabelFragment {
             case R.id.btn_select_work_code:
                 ((CuttingEntryFragment) Objects.requireNonNull(getParentFragment())).chooseWorkList();
                 break;
-            case R.id.btn_select_location:
-                ((CuttingEntryFragment) Objects.requireNonNull(getParentFragment())).chooseLocationList();
-                break;
+//            case R.id.btn_select_location:
+//                ((CuttingEntryFragment) Objects.requireNonNull(getParentFragment())).chooseLocationList();
+//                break;
             default:
                 break;
         }

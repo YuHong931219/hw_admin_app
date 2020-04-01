@@ -2,6 +2,8 @@ package cn.zmmax.zebar.fragment.purchase.cuttingEntry;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.media.MediaPlayer;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -31,6 +33,7 @@ import com.xuexiang.xutil.common.StringUtils;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -38,6 +41,7 @@ import java.util.stream.Collectors;
 
 import butterknife.BindView;
 import cn.zmmax.zebar.R;
+import cn.zmmax.zebar.activity.MainActivity;
 import cn.zmmax.zebar.base.BaseBusinessFragment;
 import cn.zmmax.zebar.base.BaseFragment;
 import cn.zmmax.zebar.base.BaseRequest;
@@ -49,6 +53,7 @@ import cn.zmmax.zebar.http.api.ApiServer;
 import cn.zmmax.zebar.print.Printer;
 import cn.zmmax.zebar.utils.QRCodeUtils;
 import cn.zmmax.zebar.utils.SettingSPUtils;
+import cn.zmmax.zebar.utils.VibratorUtil;
 import cn.zmmax.zebar.utils.ZmxUtil;
 
 import static cn.zmmax.zebar.utils.UIUtils.showErrorDialog;
@@ -68,6 +73,15 @@ public class CuttingEntryFragment extends BaseBusinessFragment {
     private List<LogiStoreActual> storeActualList = new ArrayList<>();
     private List<ProWorkMaterialResponse> proWorkMaterialResponseList = new ArrayList<>();
     private SettingSPUtils instance;
+    static MediaPlayer player;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+//         扫描提示音
+        player = MediaPlayer.create(getContext(),
+                R.raw.beep);
+    }
 
     @Override
     protected int getLayoutId() {
@@ -84,6 +98,7 @@ public class CuttingEntryFragment extends BaseBusinessFragment {
             List<ProWorkMaterialResponse> dataList = cuttingEntryListFragment.myAdapter.getData();
             for (ProWorkMaterialResponse workMaterialResponse : dataList) {
                 if(workMaterialResponse.getBatchNo().equals(StringUtils.concat(supplierCode + "-" + caseNo))){
+                    VibratorUtil.Vibrate(getActivity(), 2*1000);   //震动2秒
                     showErrorDialog(getContext(), "当前二维码不能重复扫描");
                     return;
                 }
@@ -114,6 +129,7 @@ public class CuttingEntryFragment extends BaseBusinessFragment {
                 getScanData(map);
             }
         } catch (Exception e) {
+            VibratorUtil.Vibrate(getActivity(), 2*1000);   //震动2秒
             showErrorDialog(getContext(), "条码解析错误：" + e.getMessage());
         }
     }
@@ -137,10 +153,16 @@ public class CuttingEntryFragment extends BaseBusinessFragment {
                             cuttingEntryDetailFragment.unit.setText(cuttingEntryRequest.getUnit());
                             storeActualList.addAll(cuttingEntryRequest.getStoreActualList());
                             proWorkMaterialResponseList = cuttingEntryRequest.getWorkList();
-                            if(null != storeActualList && storeActualList.size() == 1){
-                                cuttingEntryDetailFragment.locationCode.setText(storeActualList.get(0).getLocationCode());
-                                cuttingEntryDetailFragment.needAmount.setText(storeActualList.get(0).getAmount().toString());
-                            }
+//                            if(storeActualList.size() == 0){
+//                                showErrorDialog(getContext(), "当前库存量为0，请检查！");
+//                                return;
+//                            }
+//                            if(null != storeActualList && storeActualList.size() == 1){
+//                                cuttingEntryDetailFragment.locationCode.setText(storeActualList.get(0).getLocationCode());
+//                                cuttingEntryDetailFragment.needAmount.setText(storeActualList.get(0).getAmount().toString());
+//                            }
+                            // 开启提示音，提示客户条码或者二维码已经被扫到
+                            player.start();
                             if (proWorkMaterialResponseList.size() == 1) {
                                 ProWorkMaterialResponse proWorkMaterialResponse = proWorkMaterialResponseList.get(0);
                                 cuttingEntryDetailFragment.pieceWidth.setText(proWorkMaterialResponse.getPieceWidth());
@@ -232,7 +254,7 @@ public class CuttingEntryFragment extends BaseBusinessFragment {
                                                         String[] splitArr = apiResponse.getData().toString().split("#");
                                                         String group_code1 = instance.getString("GROUP_CODE", "");
                                                         String arr = splitArr[k];
-                                                        String group_code = group_code1 + arr;
+                                                        String group_code = group_code1 +"-"+ arr;
                                                         Bitmap bitmap = QRCodeUtils.createQRCodeBitmap(StringUtils.concat("G#" + StringUtils.toString(group_code)), 80, 80, "UTF-8", ErrorCorrectionLevel.L, Color.BLACK, Color.WHITE);
                                                         qrCode.setImageBitmap(bitmap);
                                                         Bitmap loadBitmapFromView = QRCodeUtils.loadBitmapFromView(linearLayout);
@@ -256,6 +278,7 @@ public class CuttingEntryFragment extends BaseBusinessFragment {
                                                     cuttingEntryDetailFragment.clear();
                                                 }).show();
                                     } else {
+                                        VibratorUtil.Vibrate(getActivity(), 2*1000);   //震动2秒
                                         showErrorDialog(getContext(), apiResponse.getMsg());
                                     }
                                 }
@@ -282,42 +305,42 @@ public class CuttingEntryFragment extends BaseBusinessFragment {
         proWorkMaterialResponse = new ProWorkMaterialResponse();
     }
 
-    void chooseLocationList() {
-        if (storeActualList == null || storeActualList.size() == 0) {
-            return;
-        }
-        View dialogView = getLayoutInflater().inflate(R.layout.common_list, null);
-        RecyclerView list = dialogView.findViewById(R.id.list);
-        DialogAdapter dialogAdapter = new DialogAdapter(R.layout.dialog_select_actual_store);
-        list.setAdapter(dialogAdapter);
-        dialogAdapter.setNewData(storeActualList);
-        dialogAdapter.setOnItemChildClickListener((adapter, view, position) -> {
-            if (view.getId() == R.id.checkbox || view.getId() == R.id.card_layout) {
-               boolean isCheck = dialogAdapter.getData().get(position).isChecked();
-                for (LogiStoreActual logiStoreActual : dialogAdapter.getData()) {
-                    logiStoreActual.setChecked(false);
-                }
-                dialogAdapter.getData().get(position).setChecked(!isCheck);
-                dialogAdapter.notifyDataSetChanged();
-            }
-        });
-        new MaterialDialog.Builder(Objects.requireNonNull(getContext()))
-                .title("选择库位")
-                .customView(dialogView, false)
-                .positiveText("确定")
-                .onPositive((dialog, which) -> {
-                    for (LogiStoreActual logiStoreActual : dialogAdapter.getData()) {
-                        if (logiStoreActual.isChecked()) {
-                            cuttingEntryDetailFragment.locationCode.setText(logiStoreActual.getLocationCode());
-                            cuttingEntryDetailFragment.needAmount.setText(StringUtils.toString(logiStoreActual.getAmount()));
-                        }
-                    }
-                    dialog.dismiss();
-                })
-                .negativeText("取消")
-                .onNegative((dialog, which) -> dialog.dismiss())
-                .show();
-    }
+//    void chooseLocationList() {
+//        if (storeActualList == null || storeActualList.size() == 0) {
+//            return;
+//        }
+//        View dialogView = getLayoutInflater().inflate(R.layout.common_list, null);
+//        RecyclerView list = dialogView.findViewById(R.id.list);
+//        DialogAdapter dialogAdapter = new DialogAdapter(R.layout.dialog_select_actual_store);
+//        list.setAdapter(dialogAdapter);
+//        dialogAdapter.setNewData(storeActualList);
+//        dialogAdapter.setOnItemChildClickListener((adapter, view, position) -> {
+//            if (view.getId() == R.id.checkbox || view.getId() == R.id.card_layout) {
+//               boolean isCheck = dialogAdapter.getData().get(position).isChecked();
+//                for (LogiStoreActual logiStoreActual : dialogAdapter.getData()) {
+//                    logiStoreActual.setChecked(false);
+//                }
+//                dialogAdapter.getData().get(position).setChecked(!isCheck);
+//                dialogAdapter.notifyDataSetChanged();
+//            }
+//        });
+//        new MaterialDialog.Builder(Objects.requireNonNull(getContext()))
+//                .title("选择库位")
+//                .customView(dialogView, false)
+//                .positiveText("确定")
+//                .onPositive((dialog, which) -> {
+//                    for (LogiStoreActual logiStoreActual : dialogAdapter.getData()) {
+//                        if (logiStoreActual.isChecked()) {
+//                            cuttingEntryDetailFragment.locationCode.setText(logiStoreActual.getLocationCode());
+//                            cuttingEntryDetailFragment.needAmount.setText(StringUtils.toString(logiStoreActual.getAmount()));
+//                        }
+//                    }
+//                    dialog.dismiss();
+//                })
+//                .negativeText("取消")
+//                .onNegative((dialog, which) -> dialog.dismiss())
+//                .show();
+//    }
 
     void chooseWorkList() {
         View dialogView = getLayoutInflater().inflate(R.layout.common_list, null);
@@ -356,7 +379,8 @@ public class CuttingEntryFragment extends BaseBusinessFragment {
 
     void sure() {
         if (TextUtils.isEmpty(cuttingEntryDetailFragment.volume.getText().toString())) {
-            showErrorDialog(getContext(), "请填写本卷长度");
+            VibratorUtil.Vibrate(getActivity(), 1*1000);
+            showErrorDialog(getContext(), "请填写本次裁切米数");
             return;
         }
         if (proWorkMaterialResponse == null) {
@@ -364,14 +388,15 @@ public class CuttingEntryFragment extends BaseBusinessFragment {
             return;
         }
        if (TextUtils.isEmpty(cuttingEntryDetailFragment.workCode.getText().toString())) {
+           VibratorUtil.Vibrate(getActivity(), 1*1000);
             showErrorDialog(getContext(), "工单不能为空");
             return;
         }
 
-        if (TextUtils.isEmpty(cuttingEntryDetailFragment.locationCode.getText().toString())) {
-            showErrorDialog(getContext(), "库位不能为空");
-            return;
-        }
+//        if (TextUtils.isEmpty(cuttingEntryDetailFragment.locationCode.getText().toString())) {
+//            showErrorDialog(getContext(), "库位不能为空");
+//            return;
+//        }
         if (proWorkMaterialResponse.getMaps() == null) {
             proWorkMaterialResponse.setMaps(new ArrayList<>());
         }
@@ -397,34 +422,66 @@ public class CuttingEntryFragment extends BaseBusinessFragment {
             materialDialog.setOnShowListener(dialog -> {
                 MDButton mdButton = materialDialog.getActionButton(DialogAction.POSITIVE);
                 mdButton.setOnClickListener(v -> {
+                    List arrList = new ArrayList<>();
                     if (TextUtils.isEmpty(pieceAmountOne.getText().toString())) {
+                        VibratorUtil.Vibrate(getActivity(), 1*1000);
                         pieceAmountOne.setError("片数不能为空");
                         return;
                     }
+                    arrList.add(pieceWidthOne.getText().toString());
+
+
                     if (!TextUtils.isEmpty(pieceWidthTwo.getText().toString()) && TextUtils.isEmpty(pieceAmountTwo.getText().toString())) {
+                        VibratorUtil.Vibrate(getActivity(), 1*1000);
                         pieceAmountTwo.setError("片数不能为空");
                         return;
                     }
                     if (TextUtils.isEmpty(pieceWidthTwo.getText().toString()) && !TextUtils.isEmpty(pieceAmountTwo.getText().toString())) {
+                        VibratorUtil.Vibrate(getActivity(), 1*1000);
                         pieceWidthTwo.setError("片宽不能为空");
                         return;
                     }
+                    if(!TextUtils.isEmpty(pieceWidthTwo.getText().toString()) && !TextUtils.isEmpty(pieceAmountTwo.getText().toString())){
+                        arrList.add(pieceWidthTwo.getText().toString());
+                    }
+
+
                     if (!TextUtils.isEmpty(pieceWidthThree.getText().toString()) && TextUtils.isEmpty(pieceAmountThree.getText().toString())) {
+                        VibratorUtil.Vibrate(getActivity(), 1*1000);
                         pieceAmountThree.setError("片数不能为空");
                         return;
                     }
                     if (TextUtils.isEmpty(pieceWidthThree.getText().toString()) && !TextUtils.isEmpty(pieceAmountThree.getText().toString())) {
+                        VibratorUtil.Vibrate(getActivity(), 1*1000);
                         pieceWidthThree.setError("片宽不能为空");
                         return;
                     }
+                    if (!TextUtils.isEmpty(pieceWidthThree.getText().toString()) && !TextUtils.isEmpty(pieceAmountThree.getText().toString())){
+                        arrList.add(pieceWidthThree.getText().toString());
+                    }
+
+
                     if (!TextUtils.isEmpty(pieceWidthFour.getText().toString()) && TextUtils.isEmpty(pieceAmountFour.getText().toString())) {
+                        VibratorUtil.Vibrate(getActivity(), 1*1000);
                         pieceAmountFour.setError("片数不能为空");
                         return;
                     }
                     if (TextUtils.isEmpty(pieceWidthFour.getText().toString()) && !TextUtils.isEmpty(pieceAmountFour.getText().toString())) {
+                        VibratorUtil.Vibrate(getActivity(), 1*1000);
                         pieceWidthFour.setError("片宽不能为空");
                         return;
                     }
+                    if(!TextUtils.isEmpty(pieceWidthFour.getText().toString()) && !TextUtils.isEmpty(pieceAmountFour.getText().toString())){
+                        arrList.add(pieceWidthFour.getText().toString());
+                    }
+
+                    boolean isRepeat = arrList.size() != new HashSet<String>(arrList).size();
+                    if(isRepeat){
+                        VibratorUtil.Vibrate(getActivity(), 1*1000);
+                        showErrorDialog(getContext(), "片宽不能重复，请检查！");
+                        return;
+                    }
+
                     Map<String, Object> map = new HashMap<>();
                     map.put("pieceWidth", pieceWidthOne.getText().toString());
                     map.put("pieceAmount", pieceAmountOne.getText().toString());
@@ -440,6 +497,7 @@ public class CuttingEntryFragment extends BaseBusinessFragment {
                     Map<String, Object> fourMap = new HashMap<>();
                     fourMap.put("pieceWidth", pieceWidthFour.getText().toString());
                     fourMap.put("pieceAmount", pieceAmountFour.getText().toString());
+
                     proWorkMaterialResponse.getMaps().add(fourMap);
                     viewPager.setCurrentItem(1);
                     proWorkMaterialResponse.setReplacedMaterial((String) cuttingEntryDetailFragment.materialCode.getTag());
@@ -449,9 +507,9 @@ public class CuttingEntryFragment extends BaseBusinessFragment {
                     proWorkMaterialResponse.setUnit(cuttingEntryDetailFragment.unit.getText().toString());
                     proWorkMaterialResponse.setBatchNo(cuttingEntryDetailFragment.batchNo.getText().toString());
                     proWorkMaterialResponse.setWorkCode(cuttingEntryDetailFragment.workCode.getText().toString());
-                    proWorkMaterialResponse.setLocationCode(cuttingEntryDetailFragment.locationCode.getText().toString());
+//                    proWorkMaterialResponse.setLocationCode(cuttingEntryDetailFragment.locationCode.getText().toString());
                     proWorkMaterialResponse.setCuttingLength(cuttingEntryDetailFragment.volume.getText().toString());
-                    proWorkMaterialResponse.setNeedAmount(new BigDecimal(cuttingEntryDetailFragment.needAmount.getText().toString()));
+//                    proWorkMaterialResponse.setNeedAmount(new BigDecimal(cuttingEntryDetailFragment.needAmount.getText().toString()));
                     proWorkMaterialResponse.setSupplierBatchNo((String) cuttingEntryDetailFragment.batchNo.getTag());
                     cuttingEntryListFragment.myAdapter.addData(proWorkMaterialResponse);
                     cuttingEntryListFragment.statusLayout.showContent();
@@ -469,9 +527,9 @@ public class CuttingEntryFragment extends BaseBusinessFragment {
             proWorkMaterialResponse.setUnit(cuttingEntryDetailFragment.unit.getText().toString());
             proWorkMaterialResponse.setBatchNo(cuttingEntryDetailFragment.batchNo.getText().toString());
             proWorkMaterialResponse.setWorkCode(cuttingEntryDetailFragment.workCode.getText().toString());
-            proWorkMaterialResponse.setLocationCode(cuttingEntryDetailFragment.locationCode.getText().toString());
+//            proWorkMaterialResponse.setLocationCode(cuttingEntryDetailFragment.locationCode.getText().toString());
             proWorkMaterialResponse.setCuttingLength(cuttingEntryDetailFragment.volume.getText().toString());
-            proWorkMaterialResponse.setNeedAmount(new BigDecimal(cuttingEntryDetailFragment.needAmount.getText().toString()));
+//            proWorkMaterialResponse.setNeedAmount(new BigDecimal(cuttingEntryDetailFragment.needAmount.getText().toString()));
             proWorkMaterialResponse.setSupplierBatchNo((String) cuttingEntryDetailFragment.batchNo.getTag());
             proWorkMaterialResponse.setReplacedMaterial((String) cuttingEntryDetailFragment.materialCode.getTag());
             cuttingEntryListFragment.myAdapter.addData(proWorkMaterialResponse);
@@ -494,7 +552,7 @@ public class CuttingEntryFragment extends BaseBusinessFragment {
             helper.addOnClickListener(R.id.checkbox, R.id.card_layout);
             helper.setText(R.id.material_code, item.getMaterialCode());
             helper.setText(R.id.batch_no, item.getBatchNo());
-            helper.setText(R.id.location_code, item.getLocationCode());
+//            helper.setText(R.id.location_code, item.getLocationCode());
             helper.setText(R.id.amount, StringUtils.toString(item.getAmount()));
         }
     }

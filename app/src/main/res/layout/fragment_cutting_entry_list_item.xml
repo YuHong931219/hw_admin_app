@@ -69,35 +69,35 @@
 
         </com.xuexiang.xui.widget.layout.XUILinearLayout>
 
+<!--        <com.xuexiang.xui.widget.layout.XUILinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content">-->
+
+<!--            <com.xuexiang.xui.widget.textview.autofit.AutoFitTextView-->
+<!--                style="@style/TextStyle.Content.Label"-->
+<!--                android:text="@string/label_location_code"-->
+<!--                tools:ignore="HardcodedText" />-->
+
+<!--            <com.xuexiang.xui.widget.textview.autofit.AutoFitTextView-->
+<!--                android:id="@+id/location_code"-->
+<!--                style="@style/TextStyle.Content.Content" />-->
+
+<!--        </com.xuexiang.xui.widget.layout.XUILinearLayout>-->
+
+
+
+<!--            <com.xuexiang.xui.widget.textview.autofit.AutoFitTextView-->
+<!--                style="@style/TextStyle.Content.Label"-->
+<!--                android:text="@string/label_need_amount"-->
+<!--                tools:ignore="HardcodedText" />-->
+
+<!--            <com.xuexiang.xui.widget.textview.autofit.AutoFitTextView-->
+<!--                android:id="@+id/need_amount"-->
+<!--                style="@style/TextStyle.Content.Content"-->
+<!--                android:layout_weight="1"/>-->
         <com.xuexiang.xui.widget.layout.XUILinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-            <com.xuexiang.xui.widget.textview.autofit.AutoFitTextView
-                style="@style/TextStyle.Content.Label"
-                android:text="@string/label_location_code"
-                tools:ignore="HardcodedText" />
-
-            <com.xuexiang.xui.widget.textview.autofit.AutoFitTextView
-                android:id="@+id/location_code"
-                style="@style/TextStyle.Content.Content" />
-
-        </com.xuexiang.xui.widget.layout.XUILinearLayout>
-
-        <com.xuexiang.xui.widget.layout.XUILinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <com.xuexiang.xui.widget.textview.autofit.AutoFitTextView
-                style="@style/TextStyle.Content.Label"
-                android:text="@string/label_need_amount"
-                tools:ignore="HardcodedText" />
-
-            <com.xuexiang.xui.widget.textview.autofit.AutoFitTextView
-                android:id="@+id/need_amount"
-                style="@style/TextStyle.Content.Content"
-                android:layout_weight="1"/>
-
             <com.xuexiang.xui.widget.textview.autofit.AutoFitTextView
                 style="@style/TextStyle.Content.Label"
                 android:text="@string/label_unit"
@@ -105,8 +105,8 @@
 
             <com.xuexiang.xui.widget.textview.autofit.AutoFitTextView
                 android:id="@+id/unit"
-                style="@style/TextStyle.Content.Content"
-                android:layout_weight="1"/>
+                style="@style/TextStyle.Content.Content" />
+<!--                android:layout_weight="1"/>-->
 
         </com.xuexiang.xui.widget.layout.XUILinearLayout>
 
@@ -116,7 +116,7 @@
 
             <com.xuexiang.xui.widget.textview.autofit.AutoFitTextView
                 style="@style/TextStyle.Content.Label"
-                android:text="本卷长度"
+                android:text="本次裁切米数"
                 tools:ignore="HardcodedText" />
 
             <com.xuexiang.xui.widget.textview.autofit.AutoFitTextView

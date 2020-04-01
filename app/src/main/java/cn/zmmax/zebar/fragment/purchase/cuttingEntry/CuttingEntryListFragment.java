@@ -91,8 +91,8 @@ public class CuttingEntryListFragment extends BaseLabelFragment {
             helper.setText(R.id.spec, item.getSpec());
             helper.setText(R.id.unit, item.getUnit());
             helper.setText(R.id.work_code, item.getWorkCode());
-            helper.setText(R.id.location_code, item.getLocationCode());
-            helper.setText(R.id.need_amount, String.valueOf(item.getNeedAmount()));
+//            helper.setText(R.id.location_code, item.getLocationCode());
+//            helper.setText(R.id.need_amount, String.valueOf(item.getNeedAmount()));
             helper.setText(R.id.volume, item.getCuttingLength());
             helper.addOnClickListener(R.id.card_entry);
         }
