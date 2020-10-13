@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 import com.xuexiang.xui.adapter.FragmentAdapter;
@@ -26,6 +27,7 @@ import java.util.Arrays;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.zmmax.zebar.R;
+import cn.zmmax.zebar.adapter.MyFragmentAdapter;
 import cn.zmmax.zebar.base.BaseActivity;
 import cn.zmmax.zebar.base.BaseHomeFragment;
 import cn.zmmax.zebar.fragment.other.AboutFragment;
@@ -41,6 +43,7 @@ import cn.zmmax.zebar.menu.SimpleItem;
 import cn.zmmax.zebar.menu.SpaceItem;
 import cn.zmmax.zebar.utils.SettingSPUtils;
 
+import static androidx.fragment.app.FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT;
 import static com.google.android.material.tabs.TabLayout.MODE_FIXED;
 
 /**
@@ -71,20 +74,21 @@ public class MainActivity extends BaseActivity implements DrawerAdapter.OnItemSe
     }
 
     private void initTab() {
+        String [] titles = new String[] { "原料管理" , "仓储管理" , "生产管理" , "报工管理" };
         TabLayout.Tab purchase = tabLayout.newTab();
-        purchase.setText("原料管理");
+        purchase.setText(titles[0]);
         purchase.setIcon(R.drawable.select_icon_tabbar_purchase);
         tabLayout.addTab(purchase);
         TabLayout.Tab warehouse = tabLayout.newTab();
-        warehouse.setText("仓储管理");
+        warehouse.setText(titles[1]);
         warehouse.setIcon(R.drawable.select_icon_tabbar_warehouse);
         tabLayout.addTab(warehouse);
         TabLayout.Tab worker = tabLayout.newTab();
-        worker.setText("生产管理");
+        worker.setText(titles[2]);
         worker.setIcon(R.drawable.select_icon_tabbar_work);
         tabLayout.addTab(worker);
         TabLayout.Tab report = tabLayout.newTab();
-        report.setText("报工管理");
+        report.setText(titles[3]);
         report.setIcon(R.drawable.select_icon_tabbar_report);
         tabLayout.addTab(report);
         tabLayout.setTabMode(MODE_FIXED);
@@ -118,7 +122,9 @@ public class MainActivity extends BaseActivity implements DrawerAdapter.OnItemSe
 
             }
         });
-        FragmentAdapter<BaseHomeFragment> adapter = new FragmentAdapter<>(getSupportFragmentManager());
+        MyFragmentAdapter<BaseHomeFragment> adapter = new MyFragmentAdapter<>(getSupportFragmentManager(), BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+
+//        FragmentAdapter<BaseHomeFragment> adapter = new FragmentAdapter<>(getSupportFragmentManager());
         PurchaseFragment purchaseFragment = new PurchaseFragment();
         adapter.addFragment(purchaseFragment, purchaseFragment.getPageName());
         WarehouseFragment warehouseFragment = new WarehouseFragment();
@@ -128,7 +134,7 @@ public class MainActivity extends BaseActivity implements DrawerAdapter.OnItemSe
         ReportFragment reportFragment = new ReportFragment();
         adapter.addFragment(reportFragment, reportFragment.getPageName());
         viewPager.setAdapter(adapter);
-        viewPager.setOffscreenPageLimit(3);
+        viewPager.setOffscreenPageLimit(titles.length - 1);
         tabLayout.setupWithViewPager(viewPager);
     }
 

@@ -1,10 +1,12 @@
 package cn.zmmax.zebar.base;
 
 import android.content.res.Configuration;
+import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,6 +37,7 @@ public abstract class BaseHomeFragment extends BaseFragment implements BaseRecyc
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
     private WidgetItemAdapter mWidgetItemAdapter;
+
 
     @Override
     protected int getLayoutId() {

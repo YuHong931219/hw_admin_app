@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <androidx.viewpager.widget.ViewPager
+    <cn.zmmax.zebar.view.NoScrollViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -17,12 +17,11 @@
             android:layout_height="match_parent">
 
         </FrameLayout>
-    </androidx.viewpager.widget.ViewPager>
+    </cn.zmmax.zebar.view.NoScrollViewPager>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabs"
         style="@style/TabLayoutStyle"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="?attr/xui_actionbar_height"
         android:background="@drawable/list_item_bg_with_border_top"
